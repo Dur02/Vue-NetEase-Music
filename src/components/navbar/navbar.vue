@@ -36,7 +36,7 @@ export default {
 
 <style scoped>
 .navBar{
-  min-width: 2000px;
+  min-width: 1500px;
   height: 150px;
   /*background-color: #000;*/
   align-items: center;
@@ -58,13 +58,13 @@ export default {
 }
 .navBar_mod{
   height: 100px;
-  background-color: pink;
+  /*background-color: pink;*/
   flex: 3;
   display: flex;
 }
 .navBar_search{
   flex: 3;
-  background-color: darkred;
+  /*background-color: darkred;*/
   text-align: center;
 }
 .navBar_login{

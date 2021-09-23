@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2380651",
+      "name": "热门",
+      "font_class": "remen",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "1250391",
+      "name": "碟片",
+      "font_class": "diepian",
+      "unicode": "e76c",
+      "unicode_decimal": 59244
+    },
+    {
+      "icon_id": "3216221",
+      "name": "音符",
+      "font_class": "icon--",
+      "unicode": "e77e",
+      "unicode_decimal": 59262
+    },
+    {
+      "icon_id": "5978784",
+      "name": "person",
+      "font_class": "renyuan",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "18170230",
+      "name": "电影,胶片,影片",
+      "font_class": "film",
+      "unicode": "e98f",
+      "unicode_decimal": 59791
+    },
+    {
       "icon_id": "584245",
       "name": "搜索",
       "font_class": "iconfonticonfontsousuo1",

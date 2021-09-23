@@ -28,4 +28,13 @@ axios.interceptors.response.use(
         return Promise.resolve(err)
     }
 )
+
+// export function getSongs(config){
+//     const instance = axios.create({
+//         baseURL:'http://localhost:3000/',
+//         timeout:5000
+//     })
+//
+//     return instance(config)
+// }
 export default axios  /*记得导出*/
