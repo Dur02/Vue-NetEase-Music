@@ -4,8 +4,13 @@ import Home from '../views/Home.vue'
 const routes = [
   {
     path: '/',
+    name: '主页面',
+    redirect: Home
+  },
+  {
+    path: '/Home',
     name: 'Home',
-    component: Home
+    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
   },
   {
     path: '/about',
