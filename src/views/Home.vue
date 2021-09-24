@@ -1,12 +1,75 @@
 <template>
   <navbar></navbar>
+  <login></login>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
+  <p>www</p>
 </template>
 
 <script>
 import navbar from "@/components/navbar/navbar";
+import login from "@/components/login/login";
 export default {
   name: 'Home',
   components: {
+    login,
     navbar
   }
 }

@@ -1,12 +1,18 @@
 <template>
-  <button class="login">
+  <button class="login" @click="activeLogin">
     登录
   </button>
 </template>
 
 <script>
+
 export default {
-  name: "navbar_login"
+  name: "navbar_login",
+  methods:{
+    activeLogin () {
+      this.$store.commit('activeLogin')
+    }
+  }
 }
 </script>
 
