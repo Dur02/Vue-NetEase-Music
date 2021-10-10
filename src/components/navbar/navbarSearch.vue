@@ -4,29 +4,24 @@
     <i class="iconfont icon-iconfonticonfontsousuo1"></i>
   </div>
   <div ref="showRes" :class="{'search_res_active':resActive,'search_res_hidden':!resActive}">
-    <div class="search_res_sort">
+    <div class="search_res_sort" v-show="songsShow === true">
       <i class="iconfont icon-icon-- search_sort"><span>单曲</span></i>
       <ul>
-        <li v-for="(item,index) in songsList" :key="index"> {{item.name}} —— {{item.ar[0].name}}</li>
+        <li v-for="(item,index) in songsList" v-show="item" :key="index"> {{item.name}} - <span v-for="(item2,index) in item.artists">{{item2.name}}&nbsp;</span></li>
+<!--        {{item.artists.name}}-->
       </ul>
     </div>
 <!--    <p v-for="(item,index) in resList" :key="index"> {{item.name}} - {{item.ar[0].name}}</p>-->
-    <div class="search_res_sort">
+    <div class="search_res_sort" v-show="artistsShow === true">
       <i class="iconfont icon-renyuan search_sort"><span>歌手</span></i>
       <ul>
-        <li v-for="(item,index) in artistsList" :key="index"> {{item.name}}</li>
+        <li v-for="(item,index) in artistsList" v-show="item" :key="index"> {{item.name}}</li>
       </ul>
     </div>
-    <div class="search_res_sort">
+    <div class="search_res_sort" v-show="albumsShow === true">
       <i class="iconfont icon-diepian search_sort"><span>专辑</span></i>
       <ul>
-        <li v-for="(item,index) in albumsList" :key="index"> {{item.name}}</li>
-      </ul>
-    </div>
-    <div class="search_res_sort">
-      <i class="iconfont icon-film search_sort"><span>MV</span></i>
-      <ul>
-        <li v-for="(item,index) in MVsList" :key="index"> {{item.name}}</li>
+        <li v-for="(item,index) in albumsList" v-show="item" :key="index">{{item.name}} - {{item.artist.name}}</li>
       </ul>
     </div>
   </div>
@@ -45,6 +40,9 @@
 <script>
 import axios from "@/plugin/axios";
 // import {getSongs} from "@/plugin/axios";
+import  {searchAdvice} from "@/plugin/axios"
+import  {searchHot} from "@/plugin/axios";
+
 export default {
   name: "navbarSearch",
   data () {
@@ -53,25 +51,25 @@ export default {
       songsList:[],
       artistsList:[],
       albumsList:[],
-      MVsList:[],
       resActive:false,
       hotActive:false,
-      HotList:[]
+      HotList:[],
+      songsShow:true,
+      albumsShow:true,
+      artistsShow:true
     }
   },
   methods:{
     refresh () {
       // setTimeout("console.log(this)",1000)
       this.$refs.showRes.style.visibility='visible';
-      this.$refs.showHot.style.visibility='visible';
-      axios({
-        url: '/search/hot',  //热门搜索
-        method: 'get'
-      })
+      this.$refs.showHot.style.visibility='visible';  //因为每次刷新搜索栏都会自动执行动画，所以每次刷新先隐藏然后显示，暂时的解决方案，需优化完善
+      searchHot()
           .then(res => {
             this.HotList = res.data.result.hots
             this.HotList.length=5;
-            console.log("热门搜索数据：", this.HotList)
+            this.hotActive = true
+            // console.log("热门搜索数据：", this.HotList)
           })
           .catch(err => {
             console.log(err)
@@ -84,72 +82,30 @@ export default {
       }
       if (this.keywords){
         this.resActive = true
-        axios({
-          url: '/cloudsearch?keywords='+this.keywords+"&type=1",  //搜索单曲api
-          method: 'get'
-        })
+        searchAdvice(this.keywords)
             .then(res => {
-              this.songsList = res.data.result.songs;
-              this.songsList.length=4;
-              // console.log("获取的单曲数据：", res)
+              if (res.data.result.songs === undefined){
+                this.songsShow = false
+              }else {
+                this.songsList = res.data.result.songs
+                this.songsShow = true
+              }
+              if (res.data.result.albums === undefined){
+                this.albumsShow = false
+              }else {
+                this.albumsList = res.data.result.albums
+                this.albumsShow = true
+              }
+              if (res.data.result.artists === undefined){
+                this.artistsShow = false
+              }else {
+                this.artistsList = res.data.result.artists
+                this.artistsShow = true
+              }
             })
             .catch(err => {
               console.log(err)
             })
-
-        axios({
-          url: '/cloudsearch?keywords='+this.keywords+"&type=100",  //搜索歌手api
-          method: 'get'
-        })
-            .then(res => {
-              this.artistsList = res.data.result.artists;
-              this.artistsList.length=2;
-              // console.log("获取的歌手数据：", this.artistsList)
-            })
-            .catch(err => {
-              console.log(err)
-            })
-
-        axios({
-          url: '/cloudsearch?keywords='+this.keywords+"&type=10",  //搜索专辑api
-          method: 'get'
-        })
-            .then(res => {
-              this.albumsList = res.data.result.albums;
-              this.albumsList.length=2;
-              // console.log("获取的专辑数据：", this.albumsList)
-            })
-            .catch(err => {
-              console.log(err)
-            })
-
-        axios({
-          url: '/cloudsearch?keywords='+this.keywords+"&type=1006",  //搜索MVapi
-          method: 'get'
-        })
-            .then(res => {
-              this.MVsList = res.data.result.songs;
-              this.MVsList.length=2;
-              // console.log("获取的MV数据：", this.MVsList)
-            })
-            .catch(err => {
-              console.log(err)
-            })
-        // getSongs({
-        //   url:'/cloudsearch?keywords='+this.keywords+'&type=1',
-        //   method: 'get'
-        // })
-        //     .then(res => {
-        //       this.resList = res.data.result.songs;
-        //       this.resList.length=4;
-        //       // result.length = 4;
-        //       // this.resList = result;
-        //       console.log("获取的数据：", this.resList)
-        //     })
-        //     .catch(err => {
-        //       console.log(err)
-        //     })   //另一种方法，也许类似的可以在@/plugin/axios.js中能封装更多的请求方法？只传入keyword和type是否可行？
-        //也许能剩下复制粘贴改代码的功夫，待改进
       }
     },
     searchBlur () {  //搜索框失焦时隐藏搜索建议
@@ -162,6 +118,7 @@ export default {
         this.hotActive =true;
       }else
         this.resActive = true
+        this.hotActive = false
     }
   }
 }
@@ -170,7 +127,7 @@ export default {
 <style scoped>
 .search_form{
   /*background-color: blue;*/
-  width: 50%;
+  width: 260px;
   height: 40px;
   /*margin-top: 28px;*/
   margin: 28px auto 0px;
@@ -197,17 +154,19 @@ export default {
   cursor: pointer;
 }
 .search_res_active{
-  width: 50%;
+  width: 260px;
   /*height: 350px;*/
   /*background-color: aquamarine;*/
   border: 1px solid rgb(231,231,231);
   background-color: rgba(255,255,255,1);
+  border-radius: 5px;
   margin: 0px auto;
+  border-top: none;
   /*display: none;*/
   font-size: 12px;
   text-align: left;
   animation-name: active;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
   overflow: hidden;
   z-index: 2;
@@ -215,17 +174,19 @@ export default {
 .search_res_hidden{
   /*display: none;*/
   visibility: hidden;
-  width: 50%;
+  width: 260px;
   /*height: 350px;*/
   /*background-color: aquamarine;*/
   border: 1px solid rgb(231,231,231);
   background-color: rgba(255,255,255,1);
+  border-radius: 5px;
   margin: 0px auto;
+  /*border-top: none;*/
   /*display: none;*/
   font-size: 14px;
   text-align: left;
   animation-name: hidden;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
   overflow: hidden;
   z-index: 2;
@@ -274,17 +235,19 @@ export default {
   border-bottom:1px solid #e7e7e7;
 }
 .search_hot_active{
-  width: 50%;
+  width: 260px;
   /*height: 350px;*/
   background-color: aquamarine;
   border: 1px solid rgb(231,231,231);
+  /*border-top: none;*/
   background-color: rgba(255,255,255,1);
+  border-radius: 5px;
   margin: 0px auto 3px auto;
   /*display: none;*/
   font-size: 12px;
   text-align: left;
   animation-name: hotActive;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
   overflow: hidden;
   z-index: 1;
@@ -292,51 +255,63 @@ export default {
 .search_hot_hidden{
   /*display: none;*/
   visibility: hidden;
-  width: 50%;
+  width: 260px;
   /*height: 350px;*/
   /*background-color: aquamarine;*/
   border: 1px solid rgb(231,231,231);
+  border-top: none;
   background-color: rgba(255,255,255,1);
+  border-radius: 5px;
   margin: 0px auto;
+  border-top: none;
   /*display: none;*/
   font-size: 14px;
   text-align: left;
   animation-name: hotHidden;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
   overflow: hidden;
   z-index: 1;
 }
 @keyframes active {
   from{
-    height: 0px;
+    max-height: 0px;
   }
   to{
-    height: 540px;
+    max-height: 540px;
   }
 }
 @keyframes hidden {
-  from{
-    height: 540px;
-  }
-  to{
-    height: 0px;
-  }
+  0%{max-height: 540px;border: 1px solid rgb(231,231,231);border-top: none;}/*此处之所以设置border-top:none是因为在搜索建议框收起时*/
+  99%{max-height: 1px;border: 1px solid rgb(231,231,231);border-top: none;} /*搜索栏下面由于border的存在会影响搜索栏下方产生阴影，本质是搜索建议框的border*/
+  100%{max-height: 0px;border: none;}                                       /*所以在动画中隐藏阴影，而尝试在css中去除上边框却无效，暂不清楚原因*/
+                                                                        /*热门搜索建议同理*/
+  /*from{*/
+  /*  height: 540px;*/
+  /*}*/
+  /*to{*/
+  /*  height: 0px;*/
+  /*}*/
 }
 @keyframes hotActive {
   from{
-    height: 0px;
+    max-height: 0px;
   }
   to{
-    height: 210px;
+    max-height: 210px;
   }
 }
 @keyframes hotHidden {
-  from{
-    height: 210px;
-  }
-  to{
-    height: 0px;
-  }
+  0%{max-height: 210px;border: 1px solid rgb(231,231,231);border-top: none;}
+  99%{max-height: 1px;border: 1px solid rgb(231,231,231);border-top: none;}
+  100%{max-height: 0px;border: none;}
+  /*from{*/
+  /*  height: 210px;*/
+  /*  !*border: 1px solid rgb(231,231,231);*!*/
+  /*}*/
+  /*to{*/
+  /*  height: 0px;*/
+  /*  !*border: none;*!*/
+  /*}*/
 }
 </style>

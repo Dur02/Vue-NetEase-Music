@@ -10,7 +10,7 @@ export default createStore({
     },
     activeHidden () {
       this.state.activeLogin = false;
-    }
+    },
   },
   actions: {
   },

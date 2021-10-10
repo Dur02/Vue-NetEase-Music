@@ -2,7 +2,7 @@
   <div class="navBar">
     <div class="navBar_inner">
       <h1>
-        <img src="@/assets/QQlogo.png">
+        <img src="@/assets/BearBeat.png">
       </h1>
       <div class="navBar_mod">
         <navbar-item title="发现音乐"></navbar-item>
@@ -16,6 +16,9 @@
         <navbar-login></navbar-login>
       </div>
     </div>
+    <div class="index-cat">
+
+    </div>
   </div>
 </template>
 
@@ -23,7 +26,7 @@
 import navbarItem from "@/components/navbar/navbarItem";
 import '@/assets/iconfont/iconfont.css'
 import navbarSearch from "@/components/navbar/navbarSearch";
-import navbarLogin from "@/components/navbar/navbar_login";
+import navbarLogin from "@/components/navbar/navbarLogin";
 export default {
   name: "navbar",
   components:{
@@ -51,6 +54,7 @@ export default {
 }
 .navBar_inner img{
   margin: 5px 10px 0px 10px;
+  height: 50px
   /*border:1px solid black;*/
 }
 .navBar_inner img:hover{
@@ -72,4 +76,5 @@ export default {
   /*background-color: aquamarine;*/
   text-align: center;
 }
+
 </style>

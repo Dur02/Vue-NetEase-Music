@@ -1,66 +1,8 @@
 <template>
   <navbar></navbar>
   <login></login>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
-  <p>www</p>
+  <p id="info"></p>
+
 </template>
 
 <script>
