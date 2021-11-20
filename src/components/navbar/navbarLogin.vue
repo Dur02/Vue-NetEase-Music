@@ -19,16 +19,6 @@ export default {
     activeLogin () {
       this.$store.commit('activeLogin')
     },
-    loginStatus () {
-      getLoginStatus()
-      .then(res => {
-        if (res.data.data.code === 200){
-          this.status = 1
-        }
-        console.log(this.status)
-        console.log(res)
-      })
-    }
   },
   beforeMount() {
     getLoginStatus()

@@ -1,45 +1,41 @@
 <template>
   <div class="search_form">
-    <input type="text" placeholder="搜索音乐、MV、歌单、用户" @click="refresh" @input="getSearch" v-model="keywords" @blur="searchBlur" @focus="searchFocus">
-    <i class="iconfont icon-iconfonticonfontsousuo1"></i>
+    <input type="text" placeholder="搜索音乐、MV、歌单" @click="refresh();getSearch()" @input="getSearch" v-model="keywords" @blur="searchBlur" @focus="searchFocus" @keyup.enter="Search">
+    <i class="iconfont icon-iconfonticonfontsousuo1" @click="Search"></i>
   </div>
-  <div ref="showRes" :class="{'search_res_active':resActive,'search_res_hidden':!resActive}">
-    <div class="search_res_sort" v-show="songsShow === true">
-      <i class="iconfont icon-icon-- search_sort"><span>单曲</span></i>
-      <ul>
-        <li v-for="(item,index) in songsList" v-show="item" :key="index"> {{item.name}} - <span v-for="(item2,index) in item.artists">{{item2.name}}&nbsp;</span></li>
-<!--        {{item.artists.name}}-->
-      </ul>
+  <div class="mod_search">
+    <div ref="showRes" :class="{'search_res_active':resActive,'search_res_hidden':!resActive}">
+      <div class="search_res_sort" v-show="songsShow === true">
+        <i class="iconfont icon-icon-- search_sort"><span>单曲</span></i>
+        <ul>
+          <li v-for="(item,index) in songsList" v-show="item" :key="index"> {{item.name}} - <span v-for="(item2,index) in item.artists">{{item2.name}}<span v-if="index+1 !== item.artists.length">/</span></span></li>
+        </ul>
+      </div>
+      <div class="search_res_sort" v-show="artistsShow === true">
+        <i class="iconfont icon-renyuan search_sort"><span>歌手</span></i>
+        <ul>
+          <li v-for="(item,index) in artistsList" v-show="item" :key="index"> {{item.name}}</li>
+        </ul>
+      </div>
+      <div class="search_res_sort" v-show="albumsShow === true">
+        <i class="iconfont icon-diepian search_sort"><span>专辑</span></i>
+        <ul>
+          <li v-for="(item,index) in albumsList" v-show="item" :key="index">{{item.name}} - {{item.artist.name}}</li>
+        </ul>
+      </div>
     </div>
-<!--    <p v-for="(item,index) in resList" :key="index"> {{item.name}} - {{item.ar[0].name}}</p>-->
-    <div class="search_res_sort" v-show="artistsShow === true">
-      <i class="iconfont icon-renyuan search_sort"><span>歌手</span></i>
-      <ul>
-        <li v-for="(item,index) in artistsList" v-show="item" :key="index"> {{item.name}}</li>
-      </ul>
-    </div>
-    <div class="search_res_sort" v-show="albumsShow === true">
-      <i class="iconfont icon-diepian search_sort"><span>专辑</span></i>
-      <ul>
-        <li v-for="(item,index) in albumsList" v-show="item" :key="index">{{item.name}} - {{item.artist.name}}</li>
-      </ul>
+    <div ref="showHot" :class="{'search_hot_active':hotActive,'search_hot_hidden':!hotActive}">
+      <div class="search_res_sort">
+       <i class="iconfont icon-remen search_sort"><span>热门</span></i>
+        <ul>
+         <li v-for="(item,index) of HotList" :key="index" @click="toSearch(item.first)"> {{item.first}}</li>
+        </ul>
+      </div>
     </div>
   </div>
-
-  <div ref="showHot" :class="{'search_hot_active':hotActive,'search_hot_hidden':!hotActive}">
-    <div class="search_res_sort">
-      <i class="iconfont icon-remen search_sort"><span>热门</span></i>
-      <ul>
-        <li v-for="(item,index) of HotList" :key="index"> {{item.first}}</li>
-      </ul>
-    </div>
-  </div>
-
 </template>
 
 <script>
-import axios from "@/plugin/axios";
-// import {getSongs} from "@/plugin/axios";
 import  {searchAdvice} from "@/plugin/axios"
 import  {searchHot} from "@/plugin/axios";
 
@@ -54,19 +50,25 @@ export default {
       resActive:false,
       hotActive:false,
       HotList:[],
-      songsShow:true,
-      albumsShow:true,
-      artistsShow:true
+      songsShow:false,
+      albumsShow:false,
+      artistsShow:false,
+    }
+  },
+  beforeMount() {
+    if (this.$route.query.keywords) {
+      // console.log(this.$route.query.keywords)
+     this.keywords = this.$route.query.keywords
     }
   },
   methods:{
     refresh () {
-      // setTimeout("console.log(this)",1000)
       this.$refs.showRes.style.visibility='visible';
       this.$refs.showHot.style.visibility='visible';  //因为每次刷新搜索栏都会自动执行动画，所以每次刷新先隐藏然后显示，暂时的解决方案，需优化完善
       searchHot()
           .then(res => {
             this.HotList = res.data.result.hots
+            // console.log("a",this.HotList)
             this.HotList.length=5;
             this.hotActive = true
             // console.log("热门搜索数据：", this.HotList)
@@ -82,8 +84,10 @@ export default {
       }
       if (this.keywords){
         this.resActive = true
+        this.hotActive = true
         searchAdvice(this.keywords)
             .then(res => {
+              // console.log(res)
               if (res.data.result.songs === undefined){
                 this.songsShow = false
               }else {
@@ -118,7 +122,26 @@ export default {
         this.hotActive =true;
       }else
         this.resActive = true
-        this.hotActive = false
+        this.hotActive = true
+    },
+    Search () {  //跳至搜索页面
+      if (this.keywords === ''){
+        searchHot()
+        .then(res=>{
+          // console.log(res)
+          this.keywords = res.data.result.hots[0].first;
+          this.$router.push({path:'/Search',query:{keywords:this.keywords,type:1}})
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      }else{
+        this.$router.push({path:'/Search',query:{keywords:this.keywords,type:1}})
+      }
+    },
+    toSearch(keywords){
+      console.log(keywords)
+      this.$router.push({path:'/Search',query:{keywords:keywords,type:1}})
     }
   }
 }
@@ -126,12 +149,11 @@ export default {
 
 <style scoped>
 .search_form{
-  /*background-color: blue;*/
-  width: 260px;
+  width: 56%;
   height: 40px;
-  /*margin-top: 28px;*/
-  margin: 28px auto 0px;
+  margin: 28px auto 0;
   border: 1px solid rgb(231,231,231);
+  background-color: white;
   border-radius: 5px;
   font-size: 16px;
   text-align: center;
@@ -139,8 +161,8 @@ export default {
 .search_form input{
   width: 80%;
   margin-top: 2px;
+  float: left;
   height: 85%;
-  /*background-color: aquamarine;*/
   border: none;
   outline: none;
   font-size: 14px;
@@ -148,70 +170,56 @@ export default {
 .icon-iconfonticonfontsousuo1{
   /*background-color: red;*/
   font-size: 20px;
+  float: right;
+  position: relative;
+  top:9px;
+  right: 3px;
 }
 .icon-iconfonticonfontsousuo1:hover{
   color: #7c9aab;
   cursor: pointer;
 }
-.search_res_active{
-  width: 260px;
-  /*height: 350px;*/
-  /*background-color: aquamarine;*/
+.search_res_active,.search_res_hidden{
+  width: 56%;
   border: 1px solid rgb(231,231,231);
-  background-color: rgba(255,255,255,1);
+  /*background-color: rgba(255,255,255,1);*/
+  background-color: aqua;
   border-radius: 5px;
-  margin: 0px auto;
+  margin: 0 auto;
   border-top: none;
-  /*display: none;*/
-  font-size: 12px;
+  border-bottom: none;
+  font-size: 14px;
   text-align: left;
   animation-name: active;
   animation-duration: 0.5s;
   animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
   overflow: hidden;
-  z-index: 2;
+}
+.search_hot_active{
+  animation-name: active;
 }
 .search_res_hidden{
-  /*display: none;*/
   visibility: hidden;
-  width: 260px;
-  /*height: 350px;*/
-  /*background-color: aquamarine;*/
-  border: 1px solid rgb(231,231,231);
-  background-color: rgba(255,255,255,1);
-  border-radius: 5px;
-  margin: 0px auto;
-  /*border-top: none;*/
-  /*display: none;*/
-  font-size: 14px;
-  text-align: left;
   animation-name: hidden;
-  animation-duration: 0.5s;
-  animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
-  overflow: hidden;
-  z-index: 2;
 }
 .search_res_active ul , .search_res_hidden ul,
 .search_hot_active ul , .search_hot_hidden ul{
-  width: 100%;
-  font-size: 16px;
-  /*border: 1px solid black;*/
+  font-size: 14px;
+  margin-bottom: 5px;
   position: relative;
   right: 40px;
-  bottom: 15px;
-  /*background-color: black;*/
+  bottom: 5px;
 }
 .search_res_active li , .search_res_hidden li ,
 .search_hot_active li , .search_hot_hidden li{
-  width: 100%;
+  width: 114%;
+  /*background-color: red;*/
   padding-left: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-all;
   cursor: pointer;
-  /*border: 1px solid black;*/
-  /*background-color: black;*/
   line-height: 30px;
 }
 .search_res_active li:hover , .search_res_hidden li:hover,
@@ -226,65 +234,49 @@ export default {
   /*background-color: black;*/
 }
 .search_sort span{
-  font-size: 16px;
+  font-size: 14px;
   margin-left: 8px;
   color: #999999;
 }
 .search_res_sort{
-  /*margin-bottom: 30px;*/
   border-bottom:1px solid #e7e7e7;
-}
-.search_hot_active{
-  width: 260px;
-  /*height: 350px;*/
-  background-color: aquamarine;
-  border: 1px solid rgb(231,231,231);
-  /*border-top: none;*/
   background-color: rgba(255,255,255,1);
+  /*background-color: #296fc7;*/
+  position: relative;
+}
+.search_hot_active,.search_hot_hidden{
+  width: 56%;
+  border: 1px solid rgb(231,231,231);
+  background-color: aquamarine;
+  /*background-color: rgb(255,255,255);*/
   border-radius: 5px;
-  margin: 0px auto 3px auto;
-  /*display: none;*/
-  font-size: 12px;
+  margin: 0 auto 3px auto;
+  font-size: 14px;
   text-align: left;
   animation-name: hotActive;
   animation-duration: 0.5s;
   animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
   overflow: hidden;
-  z-index: 1;
 }
 .search_hot_hidden{
-  /*display: none;*/
   visibility: hidden;
-  width: 260px;
-  /*height: 350px;*/
-  /*background-color: aquamarine;*/
-  border: 1px solid rgb(231,231,231);
   border-top: none;
-  background-color: rgba(255,255,255,1);
-  border-radius: 5px;
-  margin: 0px auto;
+  margin: 0 auto;
   border-top: none;
-  /*display: none;*/
-  font-size: 14px;
-  text-align: left;
   animation-name: hotHidden;
-  animation-duration: 0.5s;
-  animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
-  overflow: hidden;
-  z-index: 1;
 }
 @keyframes active {
   from{
-    max-height: 0px;
+    max-height: 0;
   }
   to{
-    max-height: 540px;
+    max-height: 1000px;
   }
 }
 @keyframes hidden {
-  0%{max-height: 540px;border: 1px solid rgb(231,231,231);border-top: none;}/*此处之所以设置border-top:none是因为在搜索建议框收起时*/
+  0%{max-height: 1000px;border: 1px solid rgb(231,231,231);border-top: none;}/*此处之所以设置border-top:none是因为在搜索建议框收起时*/
   99%{max-height: 1px;border: 1px solid rgb(231,231,231);border-top: none;} /*搜索栏下面由于border的存在会影响搜索栏下方产生阴影，本质是搜索建议框的border*/
-  100%{max-height: 0px;border: none;}                                       /*所以在动画中隐藏阴影，而尝试在css中去除上边框却无效，暂不清楚原因*/
+  100%{max-height: 0;border: none;}                                       /*所以在动画中隐藏阴影，而尝试在css中去除上边框却无效，暂不清楚原因*/
                                                                         /*热门搜索建议同理*/
   /*from{*/
   /*  height: 540px;*/
@@ -295,16 +287,17 @@ export default {
 }
 @keyframes hotActive {
   from{
-    max-height: 0px;
+    max-height: 0;
   }
   to{
-    max-height: 210px;
+    max-height: 500px;
+    /*原本是210，发现点击不了最后一个热搜，长度不够所致*/
   }
 }
 @keyframes hotHidden {
-  0%{max-height: 210px;border: 1px solid rgb(231,231,231);border-top: none;}
+  0%{max-height: 500px;border: 1px solid rgb(231,231,231);border-top: none;}
   99%{max-height: 1px;border: 1px solid rgb(231,231,231);border-top: none;}
-  100%{max-height: 0px;border: none;}
+  100%{max-height: 0;border: none;}
   /*from{*/
   /*  height: 210px;*/
   /*  !*border: 1px solid rgb(231,231,231);*!*/
@@ -313,5 +306,9 @@ export default {
   /*  height: 0px;*/
   /*  !*border: none;*!*/
   /*}*/
+}
+.mod_search{
+  position: relative;
+  z-index: 999;
 }
 </style>

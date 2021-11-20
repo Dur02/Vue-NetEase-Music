@@ -5,7 +5,7 @@
 <!--      <button @click="change">切换</button>-->
     </div>
     <div v-if="How2 !== 3">
-      <div class="login_fun" method="get">
+      <div class="login_fun">
         <div class="phoneInput">
           <input v-model="phone" type="text" name="phone" id="phone" placeholder="请输入手机号码">
         </div>
@@ -31,7 +31,7 @@
     </div>
     <div v-if="How2 === 3" class="qrlogin_area">
       <img id="qrImg" :src="qrimg" alt="" @load="scanCheck">
-      <p id="alert"></p>
+      <p id="alert">请使用网易云音乐app扫码</p>
     </div>
     <div class="qrlogin_border">
       <p @click="qrWay" v-if="How2 !== 3">二维码登录</p>
@@ -174,12 +174,13 @@ export default {
   height: 375px;
   /*margin: 100px 0px 0px 700px;*/
   position: fixed;
-  left: 40vw;
-  top: 25vh;
+  left: 35%;
+  top: 25%;
   background-color: #fff;
   border: 1px solid #282828;
   /*border: 1px solid #000;*/
-  box-shadow: 5px 5px 5px #888888
+  box-shadow: 5px 5px 5px #888888;
+  z-index: 9999;
 }
 .black_border{
   width: 100%;
