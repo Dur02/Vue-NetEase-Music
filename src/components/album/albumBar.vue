@@ -3,7 +3,7 @@
     <div class="mod_album">
       <div class="pic_block">
 <!--        <img class="album_pic" :src="album.blurPicUrl"/>-->
-        <img class="album_pic" :src="getUrl(album)"/>
+        <img class="album_pic" :src="getUrl(album)" alt="加载失败"/>
       </div>
       <div class="album_inf">
         <div class="name">
@@ -59,15 +59,14 @@ export default {
   },
   methods:{
     getUrl (item) {
-      let url = item.blurPicUrl+"?param=180y180"
       // console.log(url)
-      return url
+      return item.blurPicUrl + "?param=180y180"
     }
   },
   beforeMount() {
     album(this.id)
     .then(res=>{
-      console.log(res)
+      // console.log(res)
       this.album = res.data.album
       this.artists = this.album.artists
       this.publishTime = this.album.publishTime
@@ -93,7 +92,7 @@ export default {
 .mod_album{
   width: 65%;
   /*background-color: aqua;*/
-  margin: 0px auto;
+  margin: 0 auto;
   background-color: #fff;
   border-left: 1px solid #d5d5d5;
   border-right: 1px solid #d5d5d5;

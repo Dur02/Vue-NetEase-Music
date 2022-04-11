@@ -1,13 +1,21 @@
 <template>
   <fail v-if="this.artistCount === 0"></fail>
   <div class="mod_search" v-if="this.artistCount !== 0">
-    <div v-for="item in this.artists" class="mod_artist">
+    <div v-for="item in this.artists" :key="item.id" class="mod_artist">
       <div class="artist_pic">
 <!--        <img :src="item.picUrl" alt="加载失败"/>-->
         <img :src="getUrl(item)" alt="加载失败" @click="getArtistTop(item.id)"/>
       </div>
       <p @click="getArtistTop(item.id)">{{item.name}}</p>
     </div>
+    <el-pagination
+        layout="prev, pager, next"
+        :total="artistCount"
+        class="pagination"
+        :page-size="25"
+        v-model:current-page="currentPage"
+    />
+    <div style="width: 100%;height: 100px;position: absolute;"></div>
   </div>
 </template>
 
@@ -20,7 +28,8 @@ export default {
   data () {
     return{
       artists:[],
-      artistCount:-1
+      artistCount:-1,
+      currentPage:1
     }
   },
   components:{
@@ -33,17 +42,17 @@ export default {
       return url
     },
     getArtistTop (id) {
-      console.log(id)
+      // console.log(id)
       this.$router.push({path:'/Artist',query:{id:id}})
     },
   },
   beforeMount() {
-    console.log(this.$route)
+    // console.log(this.$route)
     if (!this.$route.query.keywords){
       searchHot()
           .then(res=>{
             // console.log(res)
-            search(res.data.result.hots[0].first,100)
+            search(res.data.result.hots[0].first,100,25,(this.currentPage-1)*25)
                 .then(res=>{
                   // console.log(res)
                   this.artistCount = res.data.result.artistCount
@@ -58,7 +67,7 @@ export default {
             console.log(err)
           })
     }else{
-      search(this.$route.query.keywords,100)
+      search(this.$route.query.keywords,100,25,(this.currentPage-1)*25)
           .then(res=>{
             // console.log(res)
             this.artistCount = res.data.result.artistCount
@@ -68,6 +77,40 @@ export default {
           .catch(err=>{
             console.log(err)
           })
+    }
+  },
+  watch:{
+    currentPage:function (newVal,oldVal) {
+      if (!this.$route.query.keywords){
+        searchHot()
+            .then(res=>{
+              // console.log(res)
+              search(res.data.result.hots[0].first,100,25,(this.currentPage-1)*25)
+                  .then(res=>{
+                    // console.log(res)
+                    this.artistCount = res.data.result.artistCount
+                    this.artists = res.data.result.artists
+                    // console.log(this.artists)
+                  })
+                  .catch(err=>{
+                    console.log(err)
+                  })
+            })
+            .catch(err=>{
+              console.log(err)
+            })
+      }else{
+        search(this.$route.query.keywords,100,25,(this.currentPage-1)*25)
+            .then(res=>{
+              // console.log(res)
+              this.artistCount = res.data.result.artistCount
+              this.artists = res.data.result.artists
+              // console.log(this.artists)
+            })
+            .catch(err=>{
+              console.log(err)
+            })
+      }
     }
   }
 }
@@ -115,5 +158,10 @@ export default {
 .mod_search p:hover{
   color: #296fc7;
   text-decoration: underline;
+}
+.pagination{
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
 }
 </style>

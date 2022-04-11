@@ -4,10 +4,10 @@
       <h1>排行榜</h1>
     </div>
     <div class="mod_index">
-      <div class="mod_list" v-for="(item,index) of toplist" :key="index">
-        <img :src="item.coverImgUrl">
+      <div class="mod_list" v-for="(item,index) of toplist" :key="item.id">
+        <img :src="getUrl(item)" alt="加载失败" @click="toTopList(item.id)">
         <div class="list_rank">
-          <div v-for="(item2,index) in item.tracks">
+          <div v-for="(item2,index) in item.tracks" :key="item.id">
             <p class="rank_song">{{index+1}}.{{item2.first}}</p>
             <p class="rank_artist">&nbsp;&nbsp;&nbsp;{{item2.second}}</p>
           </div>
@@ -24,6 +24,15 @@ export default {
   data () {
     return{
       toplist:[]
+    }
+  },
+  methods:{
+    getUrl (item) {
+      // console.log(url)
+      return item.coverImgUrl + "?param=180y180"
+    },
+    toTopList(id) {
+      this.$router.push({path:'/TopList',query:{id:id}})
     }
   },
   beforeCreate() {
@@ -45,6 +54,7 @@ export default {
   /*height: 500px;*/
   min-width: 1300px;
   position: relative;
+  margin-bottom:20px;
   /*z-index: -1;*/
   /*background-color: #0077aa;*/
   /*background-color: red;*/
@@ -59,19 +69,16 @@ export default {
   /*background-color: aquamarine;*/
   width: 65%;
   margin: 0 auto;
-  display: flex;
 }
 .mod_list{
-  width: 20%;
-  margin: 0 auto;
+  width: 100%;
+  margin: 20px auto;
+  display: flex;
 }
 .list_rank{
-  height: 250px;
-  /*background-color: aqua;*/
+  width: 80%;
   border: 1px solid #7c9aab;
   margin: 0 auto;
-  position: relative;
-  bottom: 5px;
   font-size: 14px;
   overflow: hidden;
 }
@@ -82,7 +89,10 @@ export default {
   color: #888888;
 }
 .mod_list img{
-  width: 100%;
+  width: 20%;
+}
+.mod_list img:hover{
+  cursor: pointer;
 }
 .mod_title h1{
   /*font-size: px;*/

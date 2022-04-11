@@ -3,14 +3,14 @@
     <div class="mod_playlist">
       <div class="pic_block">
 <!--        <img class="playlist_pic" :src="playlist.coverImgUrl"/>-->
-        <img class="playlist_pic" :src="getUrl(playlist)"/>
+        <img class="playlist_pic" :src="getUrl(playlist)" alt="加载失败"/>
       </div>
       <div class="playlist_inf">
         <div class="name">
           <p>{{playlist.name}}</p>
         </div>
         <div class="creator">
-          <img class="avatar" :src="avatarUrl"/>
+          <img class="comment" :src="avatarUrl" alt="加载失败"/>
           <span class="nickname">{{nickname}}</span>
           <span class="create_time">{{createTime}}创建</span>
           <span class="play_count">播放:&nbsp;<span>{{playlist.playCount}}</span>次</span>
@@ -49,9 +49,8 @@ export default {
   },
   methods:{
     getUrl (item) {
-      let url = item.coverImgUrl+"?param=180y180"
       // console.log(url)
-      return url
+      return item.coverImgUrl + "?param=180y180"
     }
   },
   beforeMount() {
@@ -121,7 +120,7 @@ export default {
   /*background-color: aquamarine;*/
   height: 40px;
 }
-.avatar{
+.comment{
   width: 40px;
   height: 40px;
 }

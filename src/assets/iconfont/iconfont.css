@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2824922 */
-  src: url('iconfont.woff2?t=1636143303170') format('woff2'),
-       url('iconfont.woff?t=1636143303170') format('woff'),
-       url('iconfont.ttf?t=1636143303170') format('truetype');
+  src: url('iconfont.woff2?t=1649432075474') format('woff2'),
+       url('iconfont.woff?t=1649432075474') format('woff'),
+       url('iconfont.ttf?t=1649432075474') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,54 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-diqiu:before {
+  content: "\e689";
+}
+
+.icon-kafei:before {
+  content: "\e763";
+}
+
+.icon-xiaolian:before {
+  content: "\e688";
+}
+
+.icon-gangqin:before {
+  content: "\e653";
+}
+
+.icon-dianzan:before {
+  content: "\ec7f";
+}
+
+.icon-jingyin:before {
+  content: "\e608";
+}
+
+.icon-yinleliebiao:before {
+  content: "\e674";
+}
+
+.icon-suijibofang:before {
+  content: "\e603";
+}
+
+.icon-geciweidianji:before {
+  content: "\e727";
+}
+
+.icon-23_shunxubofang:before {
+  content: "\e658";
+}
+
+.icon-danquxunhuan:before {
+  content: "\e6a2";
+}
+
+.icon-MV:before {
+  content: "\e62c";
 }
 
 .icon-shibai2:before {

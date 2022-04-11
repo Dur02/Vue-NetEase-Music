@@ -8,19 +8,25 @@
       <div class="search_res_sort" v-show="songsShow === true">
         <i class="iconfont icon-icon-- search_sort"><span>单曲</span></i>
         <ul>
-          <li v-for="(item,index) in songsList" v-show="item" :key="index"> {{item.name}} - <span v-for="(item2,index) in item.artists">{{item2.name}}<span v-if="index+1 !== item.artists.length">/</span></span></li>
+          <li v-for="(item,index) in songsList" v-show="item" :key="item.id" @click="hitMe(item.id)"> {{item.name}} - <span v-for="(item2,index) in item.artists">{{item2.name}}<span v-if="index+1 !== item.artists.length">/</span></span></li>
         </ul>
       </div>
       <div class="search_res_sort" v-show="artistsShow === true">
         <i class="iconfont icon-renyuan search_sort"><span>歌手</span></i>
         <ul>
-          <li v-for="(item,index) in artistsList" v-show="item" :key="index"> {{item.name}}</li>
+          <li v-for="(item,index) in artistsList" v-show="item" :key="item.id" @click="toArtist(item.id)"> {{item.name}}</li>
         </ul>
       </div>
       <div class="search_res_sort" v-show="albumsShow === true">
         <i class="iconfont icon-diepian search_sort"><span>专辑</span></i>
         <ul>
-          <li v-for="(item,index) in albumsList" v-show="item" :key="index">{{item.name}} - {{item.artist.name}}</li>
+          <li v-for="(item,index) in albumsList" v-show="item" :key="item.id" @click="toAlbum(item.id)">{{item.name}} - {{item.artist.name}}</li>
+        </ul>
+      </div>
+      <div class="search_res_sort" v-show="playlistShow === true">
+        <i class="iconfont icon-diepian search_sort"><span>歌单</span></i>
+        <ul>
+          <li v-for="(item,index) in playlist" v-show="item" :key="item.id" @click="toPlaylist(item.id)">{{item.name}}</li>
         </ul>
       </div>
     </div>
@@ -28,7 +34,7 @@
       <div class="search_res_sort">
        <i class="iconfont icon-remen search_sort"><span>热门</span></i>
         <ul>
-         <li v-for="(item,index) of HotList" :key="index" @click="toSearch(item.first)"> {{item.first}}</li>
+         <li v-for="(item,index) of HotList" :key="item.id" @click="toSearch(item.first)"> {{item.first}}</li>
         </ul>
       </div>
     </div>
@@ -36,7 +42,7 @@
 </template>
 
 <script>
-import  {searchAdvice} from "@/plugin/axios"
+import {searchAdvice, songUrl, songDetail} from "@/plugin/axios"
 import  {searchHot} from "@/plugin/axios";
 
 export default {
@@ -47,12 +53,16 @@ export default {
       songsList:[],
       artistsList:[],
       albumsList:[],
+      playlist:[],
       resActive:false,
       hotActive:false,
       HotList:[],
       songsShow:false,
       albumsShow:false,
       artistsShow:false,
+      playlistShow:false,
+      songUrl:{},
+      songs:[]
     }
   },
   beforeMount() {
@@ -67,6 +77,7 @@ export default {
       this.$refs.showHot.style.visibility='visible';  //因为每次刷新搜索栏都会自动执行动画，所以每次刷新先隐藏然后显示，暂时的解决方案，需优化完善
       searchHot()
           .then(res => {
+            // console.log(res)
             this.HotList = res.data.result.hots
             // console.log("a",this.HotList)
             this.HotList.length=5;
@@ -92,6 +103,7 @@ export default {
                 this.songsShow = false
               }else {
                 this.songsList = res.data.result.songs
+                console.log(this.songsList)
                 this.songsShow = true
               }
               if (res.data.result.albums === undefined){
@@ -105,6 +117,12 @@ export default {
               }else {
                 this.artistsList = res.data.result.artists
                 this.artistsShow = true
+              }
+              if (res.data.result.playlists === undefined){
+                this.playlistShow= false
+              }else {
+                this.playlist = res.data.result.playlists
+                this.playlistShow= true
               }
             })
             .catch(err => {
@@ -142,14 +160,44 @@ export default {
     toSearch(keywords){
       console.log(keywords)
       this.$router.push({path:'/Search',query:{keywords:keywords,type:1}})
-    }
+    },
+    hitMe(id) {
+      songUrl(id)
+          .then(res=>{
+            this.songUrl = res.data.data
+            this.$store.commit('addSong',this.songUrl)
+            this.$store.commit('markSong',id)
+            songDetail(id)
+              .then(res=>{
+               this.songs = res.data.songs
+                console.log(this.songs)
+                this.$store.commit('insertList',this.songs)
+                this.$store.commit('playOrStop',true)
+              })
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+    },
+    toAlbum(id){
+      console.log("album"+id)
+      this.$router.push({path:'/Album',query:{id:id}})
+    },
+    toArtist(id){
+      console.log("artist"+id)
+      this.$router.push({path:'/Artist',query:{id:id}})
+    },
+    toPlaylist(id){
+      console.log("playlist"+id)
+      this.$router.push({path:'/Playlist',query:{id:id}})
+    },
   }
 }
 </script>
 
 <style scoped>
 .search_form{
-  width: 56%;
+  width: 98%;
   height: 40px;
   margin: 28px auto 0;
   border: 1px solid rgb(231,231,231);
@@ -180,22 +228,21 @@ export default {
   cursor: pointer;
 }
 .search_res_active,.search_res_hidden{
-  width: 56%;
+  width: 98%;
   border: 1px solid rgb(231,231,231);
-  /*background-color: rgba(255,255,255,1);*/
-  background-color: aqua;
+  background-color: rgba(255,255,255,1);
+  /*background-color: aqua;*/
   border-radius: 5px;
   margin: 0 auto;
   border-top: none;
   border-bottom: none;
   font-size: 14px;
   text-align: left;
-  animation-name: active;
   animation-duration: 0.5s;
   animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
   overflow: hidden;
 }
-.search_hot_active{
+.search_res_active{
   animation-name: active;
 }
 .search_res_hidden{
@@ -245,18 +292,20 @@ export default {
   position: relative;
 }
 .search_hot_active,.search_hot_hidden{
-  width: 56%;
+  width: 98%;
   border: 1px solid rgb(231,231,231);
-  background-color: aquamarine;
-  /*background-color: rgb(255,255,255);*/
+  /*background-color: aquamarine;*/
+  background-color: rgb(255,255,255);
   border-radius: 5px;
   margin: 0 auto 3px auto;
   font-size: 14px;
   text-align: left;
-  animation-name: hotActive;
   animation-duration: 0.5s;
   animation-fill-mode: forwards;  /*注释会发现，在内容不能填满动画最后的高度时，高度会回弹到内容的高度*/
   overflow: hidden;
+}
+.search_hot_active{
+  animation-name: hotActive;
 }
 .search_hot_hidden{
   visibility: hidden;
@@ -270,11 +319,14 @@ export default {
     max-height: 0;
   }
   to{
-    max-height: 1000px;
+    /*background-color: red;*/
+    /*min-height: 475px;*/
+    max-height: 800px;
+    /*483*/
   }
 }
 @keyframes hidden {
-  0%{max-height: 1000px;border: 1px solid rgb(231,231,231);border-top: none;}/*此处之所以设置border-top:none是因为在搜索建议框收起时*/
+  0%{max-height: 800px;border: 1px solid rgb(231,231,231);border-top: none;}/*此处之所以设置border-top:none是因为在搜索建议框收起时*/
   99%{max-height: 1px;border: 1px solid rgb(231,231,231);border-top: none;} /*搜索栏下面由于border的存在会影响搜索栏下方产生阴影，本质是搜索建议框的border*/
   100%{max-height: 0;border: none;}                                       /*所以在动画中隐藏阴影，而尝试在css中去除上边框却无效，暂不清楚原因*/
                                                                         /*热门搜索建议同理*/
@@ -290,12 +342,13 @@ export default {
     max-height: 0;
   }
   to{
-    max-height: 500px;
+    /*max-height: 245px;*/
+    max-height: 400px;
     /*原本是210，发现点击不了最后一个热搜，长度不够所致*/
   }
 }
 @keyframes hotHidden {
-  0%{max-height: 500px;border: 1px solid rgb(231,231,231);border-top: none;}
+  0%{max-height: 400px;border: 1px solid rgb(231,231,231);border-top: none;}
   99%{max-height: 1px;border: 1px solid rgb(231,231,231);border-top: none;}
   100%{max-height: 0;border: none;}
   /*from{*/

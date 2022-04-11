@@ -2,12 +2,11 @@
   <div class="navbar">
     <div class="navbar_inner">
       <h1>
-        <img src="@/assets/BearBeat.png">
+        <img src="@/assets/BearBeat.png" alt="加载失败"/>
       </h1>
       <div class="navbar_mod">
-        <navbar-item title="发现音乐" :class="{'active':home}" @click="toHome"></navbar-item>
-        <navbar-item title="我的音乐" :class="{'active':mine}"></navbar-item>
-        <navbar-item title="好友" :class="{'active':friend}"></navbar-item>
+        <navbar-item title="发现音乐" :class="{'active':navItem === 'home'}" @click="toHome"></navbar-item>
+        <navbar-item title="我的音乐" :class="{'active':navItem === 'my'}" @click="toMy"></navbar-item>
       </div>
       <div class="navbar_search">
         <navbar-search></navbar-search>
@@ -18,16 +17,16 @@
     </div>
     <div class="navbar_lower">
       <div class="categories_index">
-        <categories title="推荐" :class="{'cat_active':home}"></categories>
-        <categories title="排行榜"></categories>
-        <categories title="歌单"></categories>
-        <categories title="主播电台"></categories>
-        <categories title="歌手"></categories>
-        <categories title="新碟上架"></categories>
+        <categories title="推荐" :class="{'low-active':flag === 'recommend'}" @click="jump('/Home')"></categories>
+        <categories title="排行榜" :class="{'low-active':flag === 'toplist'}" @click="jump('/DiscoverTopList')"></categories>
+        <categories title="歌单" :class="{'low-active':flag === 'playlist'}" @click="jump('/DiscoverPlayList')"></categories>
+        <categories title="歌手" :class="{'low-active':flag === 'artist'}" @click="jump('/DiscoverArtist')"></categories>
+        <categories title="新碟上架" :class="{'low-active':flag === 'album'}" @click="jump('/DiscoverAlbum')"></categories>
       </div>
     </div>
   </div>
   <login></login>
+<!--  <controller></controller>-->
 </template>
 
 <script>
@@ -37,17 +36,18 @@ import navbarSearch from "@/components/navbar/navbarSearch";
 import navbarLogin from "@/components/navbar/navbarLogin";
 import categories from "@/components/categories/categories";
 import Login from "@/components/login/login";
+import Controller from "@/components/music/controller";
 
 export default {
   name: "navbar",
   data () {
     return{
-      home:false,
-      mine:false,
-      friend:false
+      navItem:"home",
+      flag:'recommend'
     }
   },
   components:{
+    Controller,
     Login,
     navbarItem,
     navbarSearch,
@@ -55,28 +55,49 @@ export default {
     categories
   },
   beforeMount() {
-    // console.log(this.$route)
-    if (this.$route.path === '/Home' || this.$route.path === '/Search' || this.$route.path === '/Playlist'
-        || this.$route.path === '/Album' || this.$route.path === '/Artist')
-    {
-      this.home = true
-      this.mine = false
-      this.friend = false
-    }
-    if (this.$route.path === '/Mine'){
-      this.mine = true
-      this.home = false
-      this.friend = false
-    }
-    if (this.$route.path === '/Friend'){
-      this.friend = true
-      this.mine = false
-      this.home = false
+    switch (this.$route.path){
+      case '/Home':
+        this.flag = 'recommend'
+        this.navItem = 'home'
+        break
+      case '/DiscoverTopList':
+        this.flag = 'toplist'
+        this.navItem = 'home'
+        break
+      case '/DiscoverPlayList':
+        this.flag = 'playlist'
+        this.navItem = 'home'
+        break
+      case '/DiscoverArtist':
+        this.flag = 'artist'
+        this.navItem = 'home'
+        break
+      case '/DiscoverAlbum':
+        this.flag = 'album'
+        this.navItem = 'home'
+        break
+      case '/My':
+        this.flag = ""
+        this.navItem = 'my'
+        break
+      default:
+        this.flag = ''
+        this.navItem = ''
+        break
     }
   },
   methods:{
     toHome () {
       this.$router.push('/Home')
+    },
+    toMy () {
+      this.$router.push('/My')
+    },
+    setFlag(identify) {
+      this.flag = identify
+    },
+    jump(route){
+      this.$router.push(route)
     }
   }
 }
@@ -88,9 +109,6 @@ export default {
   color: white;
   cursor: pointer;
 }
-.cat_active{
-  color: #296fc7;
-}
 .navbar{
   min-width: 1300px;
   height: 150px;
@@ -99,7 +117,7 @@ export default {
 }
 .navbar_inner{
   margin: 0 auto;
-  width: 85%;
+  width: 75%;
   height: 100px;
   /*background-color: antiquewhite;*/
   display: flex;
@@ -116,14 +134,14 @@ export default {
 .navbar_mod{
   height: 100px;
   /*background-color: pink;*/
-  flex: 3;
+  flex: 1;
   display: flex;
 }
 .navbar_search{
-  flex: 3;
-  height: 660px;
+  flex: 1;
+  height: 728px;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   /*background-color: darkred;*/
   text-align: center;
 }
@@ -143,5 +161,9 @@ export default {
   width: 65%;
   height: 100%;
   display: flex;
+}
+.low-active{
+  color: #296fc7;
+  cursor: pointer;
 }
 </style>

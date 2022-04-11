@@ -8,3 +8,7 @@ import '@/assets/iconfont/iconfont.css'
 import '@/assets/iconfont/iconfont'
 
 createApp(App).use(ElementPlus).use(store).use(router).mount('#app')
+
+router.afterEach(()=>{
+    document.documentElement.scrollTop = 0;
+})

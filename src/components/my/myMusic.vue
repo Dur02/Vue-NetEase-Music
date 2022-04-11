@@ -1,0 +1,52 @@
+<template>
+  <div class="mod-section">
+    <div class="mod-block">
+      <not-login v-if="!loginOrNot"/>
+      <sider v-if="loginOrNot"/>
+      <Content v-if="loginOrNot"/>
+    </div>
+  </div>
+</template>
+
+<script>
+import {getLoginStatus} from "@/plugin/axios";
+import NotLogin from "@/components/login/notLogin";
+import Sider from  "@/components/my/sider"
+import Content from "@/components/my/content"
+
+export default {
+  name: "my",
+  components: {NotLogin,Sider,Content},
+  data(){
+    return{
+      loginOrNot:false
+    }
+  },
+  beforeMount() {
+    getLoginStatus()
+      .then(res=>{
+        console.log(res)
+        if (res.data.data.account !== null){
+          this.loginOrNot = true
+        }
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+  },
+}
+</script>
+
+<style scoped>
+.mod-section{
+  min-width: 1300px;
+  /*background-image: linear-gradient(#f2f2f2,#fafafa);*/
+  position: relative;
+  bottom: 0.5em;
+}
+.mod-block{
+  width: 80%;
+  margin: 0 auto;
+  background-color: #fff;
+}
+</style>

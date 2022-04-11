@@ -4,30 +4,22 @@
       <h1>热门推荐</h1>
     </div>
 
-    <div class="mod_title">
-      <div v-for="(item,index) of hotPlaylist.slice(0,4)" class="mod_playList">
-<!--        <img :src="item.picUrl" class="playList_pic" alt="加载失败" @click="toPlaylistDetail(item.id)">-->
-        <img :src="getUrl(item)" class="playList_pic" alt="加载失败" @click="toPlaylistDetail(item.id)">
+    <div class="mod_block">
+      <div class="mod_playlist" v-for="(item,index) of hotPlaylist" :key="item.id">
+        <div class="mod_pic">
+          <img :src="getUrl(item)" class="artist-pic" alt="加载失败" @click="toPlaylistDetail(item.id)">
+        </div>
+        <div class="mod_name">
+          <span class="artist-name" @click="toPlaylistDetail(item.id)">{{item.name}}</span>
+        </div>
       </div>
     </div>
-    <div class="mod_title">
-      <span v-for="(item,index) of hotPlaylist.slice(0,4)" class="playList_desc" @click="toPlaylistDetail(item.id)">{{item.name}}</span>
-    </div>
-
-    <div class="mod_title">
-      <div v-for="(item,index) of hotPlaylist.slice(4,8)" class="mod_playList">
-        <img :src="getUrl(item)" class="playList_pic" alt="加载失败" @click="toPlaylistDetail(item.id)">
-      </div>
-    </div>
-    <div class="mod_title">
-      <span v-for="(item,index) of hotPlaylist.slice(4,8)" class="playList_desc" @click="toPlaylistDetail(item.id)">{{item.name}}</span>
-    </div>
-
   </div>
 </template>
 
 <script>
-import {personalized, playlistDetail} from "@/plugin/axios";
+import {personalized} from "@/plugin/axios";
+
 export default {
   name: "hotPlaylist",
   data () {
@@ -43,9 +35,8 @@ export default {
       this.$router.push({path:'/Playlist',query:{id:id}})
     },
     getUrl (item) {
-      let url = item.picUrl+"?param=180y180"
       // console.log(url)
-      return url
+      return item.picUrl + "?param=180y180"
     }
   },
   beforeCreate() {
@@ -71,19 +62,30 @@ export default {
 .mod_title{
   margin: 0 auto;
   width: 65%;
-  display: flex;
+  text-align: center;
 }
 .mod_title h1{
   margin: 30px auto 10px auto;
   font-family: "微軟正黑體 Light", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
 }
-.mod_playList{
+.mod_block{
+  /*background-color: #296fc7;*/
+  width: 70%;
+  margin: 0 auto;
+}
+.mod_playlist{
   width: 20%;
   height: 100%;
-  margin: 0 auto;
+  margin: 0 20px;
+  overflow: hidden;
+  display: inline-grid;
+}
+.mod_pic{
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
-.playList_pic{
+.artist-pic{
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -91,17 +93,19 @@ export default {
   -webkit-transition: transform .75s;
   display: block;
 }
-.playList_pic:hover{
+.artist-pic:hover{
   transform: scale(1.1) translateZ(0);
   -webkit-transform: scale(1.1) translateZ(0);
 }
-.playList_desc{
+.mod_name{
+  margin: 10px auto;
+}
+.artist-name{
   width: 21%;
   margin: 20px auto;
   font-size: 15px;
 }
-.playList_desc:hover{
+.artist-name:hover{
   color: #296fc7;
-  text-decoration: underline;
 }
 </style>

@@ -19,7 +19,6 @@ export default {
   flex: 1;
   text-align: center;
   position: relative;
-  z-index: 1;
 }
 .categories_item p{
   line-height: 25px;

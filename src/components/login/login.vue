@@ -22,7 +22,7 @@
         </div>
         <a href="javascript:(0)" @click="change" class="change" ref="choice" v-if="How2 === 1">密码登录</a>
         <a href="javascript:(0)" @click="change" class="change" ref="choice" v-if="How2 === 2">短信登录</a>
-        <div class="login_btn" @click="login()"><p>登录</p></div>
+        <div class="login_btn" @click="login"><p>登录</p></div>
       </div>
       <div class="alert_inf" v-if="errorList.length > 0">
         <p class="alert_danger" role="alert" v-for="item in errorList">{{item}}</p>
@@ -41,8 +41,7 @@
 </template>
 
 <script>
-import {getCaptcha,verify,captchaLogin,passwordLogin,getLoginStatus,qrlogin} from "@/plugin/axios";
-import axios from "@/plugin/axios";
+import {getCaptcha,captchaLogin,passwordLogin,qrlogin} from "@/plugin/axios";
 
 export default {
   name: "login",

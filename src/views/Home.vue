@@ -1,28 +1,32 @@
 <template>
   <navbar></navbar>
-  <banner></banner>
-  <hot-playlist></hot-playlist>
-  <newest-album></newest-album>
-  <toplist></toplist>
+  <home-recommend></home-recommend>
 </template>
 
 <script>
 import navbar from "@/components/navbar/navbar";
-import login from "@/components/login/login";
-import hotPlaylist from "@/components/recommend/hotPlaylist";
-import Banner from "@/components/banner/banner";
-import NewestAlbum from "@/components/recommend/newestAlbum";
-import Toplist from "@/components/recommend/toplist";
+import Categories from "@/components/categories/categories";
+import homeRecommend from "@/components/home/recommend/home-recommend"
 
 export default {
   name: 'Home',
+  data() {
+    return {
+      flag:'recommend'
+    }
+  },
   components: {
-    Toplist,
-    NewestAlbum,
-    Banner,
-    login,
     navbar,
-    hotPlaylist
+    Categories,
+    homeRecommend,
+  },
+  methods: {
+    setFlag(identify) {
+      this.flag = identify
+    }
   }
 }
 </script>
+<style scoped>
+
+</style>

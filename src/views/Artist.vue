@@ -11,6 +11,7 @@
       </div>
       <song v-if="type===1"></song>
       <album v-if="type===2"></album>
+      <artist-m-v v-if="type===3"></artist-m-v>
       <description v-if="type===4"></description>
     </div>
   </div>
@@ -23,10 +24,11 @@ import artistBar from "@/components/artist/artistBar";
 import song from "@/components/artist/song";
 import album from "@/components/artist/album";
 import Description from "@/components/artist/description";
+import ArtistMV from "@/components/artist/artistMv";
 
 export default {
   name: "Artist",
-  components: {Description, Categories, Navbar,artistBar,song,album},
+  components: {ArtistMV, Description, Categories, Navbar,artistBar,song,album},
   data () {
     return{
       type:1
@@ -35,37 +37,8 @@ export default {
   methods: {
     change(type){
       this.type = type
-    }
+    },
   }
-  // beforeMount() {
-  //   artist(this.id)
-  //   .then(res=>{
-  //     // console.log(res)
-  //   })
-  //   // artistTop(this.id)
-  //   // .then(res=>{
-  //   //   console.log(res)
-  //   // })
-  //   // .catch(err=>{
-  //   //   console.log(err)
-  //   // })
-  //   //
-  //   // artistDesc(this.id)
-  //   // .then(res=>{
-  //   //   console.log(res)
-  //   // })
-  //   // .catch(err=>{
-  //   //   console.log(err)
-  //   // })
-  //   //
-  //   // artistDetail(this.id)
-  //   // .then(res=>{
-  //   //   console.log(res)
-  //   // })
-  //   // .catch(err=>{
-  //   //   console.log(err)
-  //   // })
-  // }
 }
 </script>
 
@@ -73,6 +46,7 @@ export default {
 .mod_section{
   /*background-color: aquamarine;*/
   min-width: 1300px;
+  position: relative;
   background-image: linear-gradient(#f2f2f2,#fafafa);
 }
 .mod_sort{

@@ -46,6 +46,7 @@ export default {
 
 <style scoped>
 .mod_artist{
+  position: relative;
   /*width: 65%;*/
   /*background-color: #7c9aab;*/
   /*margin: 0 auto;*/

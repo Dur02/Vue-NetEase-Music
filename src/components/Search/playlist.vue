@@ -1,13 +1,21 @@
 <template>
   <fail v-if="this.playlistCount === 0"></fail>
   <div class="mod_search" v-if="this.playlistCount !== 0">
-    <div v-for="item in this.playlists" class="mod_playlist">
+    <div v-for="item in this.playlists" :key="item.id" class="mod_playlist">
       <div class="playlist_pic">
 <!--        <img :src="item.coverImgUrl ?param=150y150" alt="加载失败"/>-->
         <img :src="getUrl(item)" alt="加载失败" @click="toPlaylistDetail(item.id)"/>
       </div>
       <p>{{item.name}}</p>
     </div>
+    <el-pagination
+        layout="prev, pager, next"
+        :total="playlistCount"
+        class="pagination"
+        :page-size="25"
+        v-model:current-page="currentPage"
+    />
+    <div style="width: 100%;height: 100px;position: absolute;"></div>
   </div>
 </template>
 
@@ -21,6 +29,7 @@ export default {
     return{
       playlists:[],
       playlistCount:-1,
+      currentPage:1
     }
   },
   components:{
@@ -37,12 +46,12 @@ export default {
     }
   },
   beforeMount() {
-    console.log(this.$route)
+    // console.log(this.$route)
     if (!this.$route.query.keywords){
       searchHot()
           .then(res=>{
             // console.log(res)
-            search(res.data.result.hots[0].first,1000)
+            search(res.data.result.hots[0].first,1000,25,(this.currentPage-1)*25)
                 .then(res=>{
                   // console.log(res)
                   this.playlistCount = res.data.result.playlistCount
@@ -57,7 +66,7 @@ export default {
             console.log(err)
           })
     }else{
-      search(this.$route.query.keywords,1000)
+      search(this.$route.query.keywords,1000,25,(this.currentPage-1)*25)
           .then(res=>{
             // console.log(res)
             this.playlists = res.data.result.playlists
@@ -67,6 +76,40 @@ export default {
           .catch(err=>{
             console.log(err)
           })
+    }
+  },
+  watch:{
+    currentPage:function (newVal,oldVal) {
+      if (!this.$route.query.keywords) {
+        searchHot()
+            .then(res => {
+              // console.log(res)
+              search(res.data.result.hots[0].first, 1000, 25, (this.currentPage - 1) * 25)
+                  .then(res => {
+                    // console.log(res)
+                    this.playlistCount = res.data.result.playlistCount
+                    this.playlists = res.data.result.playlists
+                    // console.log(this.playlists)
+                  })
+                  .catch(err => {
+                    console.log(err)
+                  })
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      } else {
+        search(this.$route.query.keywords, 1000, 25, (this.currentPage - 1) * 25)
+            .then(res => {
+              // console.log(res)
+              this.playlists = res.data.result.playlists
+              this.playlistCount = res.data.result.playlistCount
+              // console.log(this.playlists)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
     }
   }
 }
@@ -114,5 +157,10 @@ export default {
 .mod_search p:hover{
   color: #296fc7;
   text-decoration: underline;
+}
+.pagination{
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
 }
 </style>

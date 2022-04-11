@@ -4,6 +4,7 @@
   <artist v-if="type === '100'"></artist>
   <playlist v-if="type === '1000'"></playlist>
   <mv v-if="type === '1004'"></mv>
+<!--  <div style="width: 100%;height: 60px;background-color: aqua;position: fixed;bottom: 0"></div>-->
 </template>
 
 <script>
@@ -29,6 +30,5 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 </style>

@@ -32,7 +32,7 @@ export default {
   padding-top: 10px;
   position: relative;
   /*left: 20%;*/
-  z-index: 99;
+  z-index: 90;
   /*background-color: aqua;*/
 }
 </style>

@@ -6,14 +6,12 @@
         <p>{{desc.briefDesc}}</p>
       </div>
     </div>
-
     <div class="mod_block" v-for="item of this.desc.introduction">
       <h4>{{item.ti}}</h4>
       <div class="txt">
         <p>{{item.txt}}</p>
       </div>
     </div>
-
   </div>
 
 </template>
@@ -46,6 +44,7 @@ export default {
 .mod_desc{
   width: 80%;
   margin: 0 auto;
+  position: relative;
   /*border: 1px solid #d5d5d5;*/
 }
 .mod_block{

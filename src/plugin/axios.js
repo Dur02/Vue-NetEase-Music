@@ -33,66 +33,59 @@ axios.interceptors.response.use(
 
 //搜索建议
 export function searchAdvice (keywords) {
-    const res = axios({
-        url: `/search/suggest?keywords=${keywords}`,  //搜索建议
+    return axios({
+        url: `/search/suggest?keywords=${keywords}&timerstamp=${Date.now()}`,  //搜索建议
         method: 'get'
-    })
-    return res;
+    });
 }
 
 //热门搜索
-export function searchHot (keywords) {
-    const res = axios({
-        url: '/search/hot',  //热门搜索
+export function searchHot () {
+    return axios({
+        url: `/search/hot`,  //热门搜索
         method: 'get'
-    })
-    return res;
+    });
 }
 
 //获取验证码
-export function getCaptcha (phone) {
-    const res = axios({
+export async function getCaptcha (phone) {
+    return axios({
         url: `/captcha/sent?phone=${phone}`,  //获取验证码
         method: 'get'
-    })
-    return res;
+    });
 }
 
 //验证码验证
-export function verify (phone,captcha){
-    const res = axios({
+export async function verify (phone,captcha){
+    return axios({
         url: `/captcha/verify?phone=${phone}&captcha=${captcha}`,  //检验验证码
         method: 'get'
     })
-    return res
 }
 
 //验证码登录
-export function captchaLogin (phone,captcha){
-    const res = axios({
+export async function captchaLogin (phone,captcha){
+    return axios({
         url: `/login/cellphone?phone=${phone}&captcha=${captcha}&timerstamp=${Date.now()}`,  //检验验证码
         method: 'post'
     })
-    return res
 }
 
 //密码登录
-export function passwordLogin (phone,password){
-    const res = axios({
+export async function passwordLogin (phone,password){
+    return axios({
         url: `/login/cellphone?phone=${phone}&password=${password}&timerstamp=${Date.now()}`,
         method: 'post'
     })
-    return res
 }
 
 // 检查二维码状态
 export async function checkStatus(key) {
-    const res = await axios({
+    // console.log(res)
+    return await axios({
         url: `/login/qr/check?key=${key}&timerstamp=${Date.now()}`,
         withCredentials: true, //关键
     })
-    // console.log(res)
-    return res
 }
 
 //检查登录状态
@@ -101,7 +94,7 @@ export async function getLoginStatus() {
         url: `/login/status?timerstamp=${Date.now()}`,
         withCredentials: true, //关键
     })
-    // console.log(res)
+    // console.log("sssss",res)
     if (res.data.data.account !== null){
         // document.querySelector('#info').innerText = JSON.stringify(res.data.data.profile.nickname, null, 2)
     }
@@ -147,124 +140,254 @@ export async function qrlogin() {
 }
 
 //歌单推荐
-export function personalized() {
-    const res = axios({
+export async function personalized() {
+    return axios({
         url: `/personalized?limit=8`,
         method: 'get'
     })
-    return res
 }
 
 //获取轮播图数据
-export function banner() {
-    const res = axios({
+export async function banner() {
+    return axios({
         url: `/banner`,
         method: 'get'
     })
-    return res
 }
 
 //获取最新专辑
-export function newestAlbum() {
-    const res = axios({
+export async function newestAlbum() {
+    return axios({
         url: `/album/newest`,
         method: 'get'
     })
-    return res
 }
 
 //获取排行榜摘要
-export function topListDetail() {
-    const res = axios({
+export async function topListDetail() {
+    // console.log(res)
+    return axios({
         url: `/toplist/detail`,
         method: 'get'
     })
-    // console.log(res)
-    return res
 }
 
 //搜索
-export function search(keyword,type) {
-    const res = axios({
-        url: `/search?keywords=${keyword}&type=${type}`,
+export async function search(keyword,type,limit,offset) {
+    // console.log(limit)
+    let res = axios({
+        url: `/search?keywords=${keyword}&type=${type}&limit=${limit}&offset=${offset}&timerstamp=${Date.now()}`,
         method: 'get'
     })
-    // console.log(res)
     return res
 }
 
 //获取歌单详情
-export function playlistDetail(id){
-    const res = axios({
+export async function playlistDetail(id){
+    // console.log(res)
+    return axios({
         url: `/playlist/detail?id=${id}`,
         method: 'get'
     })
-    // console.log(res)
-    return res
 }
 
-//根据个单的tracksId查询出全部歌曲信息
-export function  songDetail(ids){
-    const res = axios({
+//根据歌单的tracksId查询出全部歌曲信息,或者获取某一个歌曲的信息
+export async function songDetail(ids){
+    return axios({
         url: `/song/detail?ids=${ids}`,
         method: 'get'
     })
-    return res
 }
 
-//获取歌单详情
-export function album(id){
-    const res = axios({
+//获取专辑详情
+export async function album(id){
+    return axios({
         url: `/album?id=${id}`,
         method: 'get'
     })
-    return res
 }
 
 //获取歌手信息，包括热门歌曲和部分信息
-export function artist(id){
-    const res = axios({
+export async function artist(id){
+    return axios({
         url: `/artists?id=${id}`,
         method: 'get'
     })
-    return res
 }
 
 //获取歌手前50首歌
-export function artistTop(id){
-    const res = axios({
+export async function artistTop(id){
+    return axios({
         url: `/artist/top/song?id=${id}`,
         method: 'get'
     })
-    return res
 }
 
 //获取歌手描述
-export function artistDesc(id){
-    const res = axios({
+export async function artistDesc(id){
+    return axios({
         url: `/artist/desc?id=${id}`,
         method: 'get'
     })
-    return res
 }
 
 //获取歌手详情
-export function artistDetail(id){
-    const res = axios({
+export async function artistDetail(id){
+    return axios({
         url: `/artist/detail?id=${id}`,
         method: 'get'
     })
-    return res
 }
 
 //获取歌手专辑
-export function artistAlbum(id){
-    const res = axios({
-        url: `/artist/album?id=${id}`,
+export async function artistAlbum(id,offset){
+    return axios({
+        url: `/artist/album?id=${id}&offset=${offset}`,
         method: 'get'
     })
-    return res
 }
 
+//获取MV数据，不包括地址
+export async function mvDetail(id){
+    return axios({
+        url: `/mv/detail?mvid=${id}`,
+        method: 'get'
+    })
+}
 
+//获取MV地址,可通过mvDetail获取分辨率列表，用参数r传入，默认1080p，暂时放置
+export async function mvUrl(id){
+    return axios({
+        url: `/mv/url?id=${id}`,
+        method: 'get'
+    })
+}
+
+//传入type, 资源id可获得对应资源热门评论
+export async function hotCommont(id,type,limit){
+    return axios({
+        url: `/comment/hot?id=${id}type=${type}`,
+        method: 'get'
+    })
+}
+
+//获取歌手的mv
+export async function artistMv(id,offset){
+    return axios({
+        url: `/artist/mv?id=${id}&limit=20&offset=${offset}`,
+        method: 'get'
+    })
+}
+
+//根据音乐的id获取音乐url
+export async function songUrl(id){
+    return axios({
+        url: `/song/url?id=${id}`,
+        method: 'get'
+    })
+}
+
+//获取歌词
+export async function lyric(id){
+    return axios({
+        url: `/lyric?id=${id}`,
+        method: 'get'
+    })
+}
+
+//获取单曲评论
+export async function songComment(id,offset){
+        return axios({
+            url: `/comment/music?id=${id}&offset=${offset}`,
+            method: 'get'
+        })
+}
+
+//获取歌单评论
+export async function playlistComment(id,offset){
+    return axios({
+        url: `/comment/playlist?id=${id}&offset=${offset}`,
+        method: 'get'
+    })
+}
+
+//获取专辑评论
+export async function albumComment(id,offset){
+    return axios({
+        url: `/comment/album?id=${id}&offset=${offset}`,
+        method: 'get'
+    })
+}
+
+//获取MV评论
+export async function MVComment(id,offset){
+    return axios({
+        url: `/comment/mv?id=${id}&offset=${offset}`,
+        method: 'get'
+    })
+}
+
+//获取用户歌单
+export async function userPlaylist(uid){
+    return axios({
+        url: `/user/playlist?uid=${uid}`,
+        method: 'get'
+    })
+}
+
+//获取歌手全部歌曲
+export async function artistAllSongs(id,limit,offset){
+    return axios({
+        url: `/artist/songs?id=${id}&limit=${limit}&offset=${offset}`,
+        method: 'get'
+    })
+}
+
+//获取全部榜单
+export async function topList(){
+    return axios({
+        url: `/toplist`,
+        method: 'get'
+    })
+}
+
+//获取全部歌单分类
+export async function catlist(){
+    return axios({
+        url: `/playlist/catlist`,
+        method: 'get'
+    })
+}
+
+//获取全部歌单分类
+export async function topPlaylist(order,cat,limit,offset){
+    return axios({
+        url: `/top/playlist?order=${order}&cat=${cat}&limit=${limit}&offset=${offset}`,
+        method: 'get'
+    })
+}
+
+//获取歌手
+export async function artistList(type,area,initial,limit,offset){
+    return axios({
+        url: `/artist/list?type=${type}&area=${area}&initial=${initial}&limit=${limit}&offset=${offset}`,
+        method: 'get'
+    })
+}
+
+//获取全部新碟
+export async function allAlbum(area,limit,offset){
+    return axios({
+        url: `/album/new?area=${area}&limit=${limit}&offset=${offset}`,
+        method: 'get'
+    })
+}
+
+//获取全部新碟
+export async function userSubCount(){
+    return axios({
+        url: `/user/subcount`,
+        method: 'get'
+    })
+}
 export default axios  /*记得导出*/
