@@ -2,7 +2,7 @@
   <div class="mod-section">
     <div class="mod-block">
       <not-login v-if="!loginOrNot"/>
-      <sider v-if="loginOrNot"/>
+      <sider v-if="loginOrNot" :uid="uid"/>
       <Content v-if="loginOrNot"/>
     </div>
   </div>
@@ -19,7 +19,8 @@ export default {
   components: {NotLogin,Sider,Content},
   data(){
     return{
-      loginOrNot:false
+      loginOrNot:false,
+      uid:-1
     }
   },
   beforeMount() {
@@ -28,6 +29,7 @@ export default {
         console.log(res)
         if (res.data.data.account !== null){
           this.loginOrNot = true
+          this.uid = res.data.data.account.id
         }
       })
       .catch(err=>{

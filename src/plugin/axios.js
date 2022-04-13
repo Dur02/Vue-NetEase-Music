@@ -328,9 +328,9 @@ export async function MVComment(id,offset){
 }
 
 //获取用户歌单
-export async function userPlaylist(uid){
+export async function userPlaylist(uid,limit,offset){
     return axios({
-        url: `/user/playlist?uid=${uid}`,
+        url: `/user/playlist?uid=${uid}&limit=${limit}&offset=${offset}`,
         method: 'get'
     })
 }
@@ -383,11 +383,13 @@ export async function allAlbum(area,limit,offset){
     })
 }
 
-//获取全部新碟
+//获取用户订阅的各种资源数量
 export async function userSubCount(){
     return axios({
         url: `/user/subcount`,
         method: 'get'
     })
 }
+
+
 export default axios  /*记得导出*/
