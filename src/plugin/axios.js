@@ -391,5 +391,19 @@ export async function userSubCount(){
     })
 }
 
+//获取用户收藏的歌手列表
+export async function arSublist(){
+    return axios({
+        url: `/artist/sublist`,
+        method: 'get'
+    })
+}
 
+//获取用户收藏的MV列表
+export async function mvSublist(){
+    return axios({
+        url: `/mv/sublist`,
+        method: 'get'
+    })
+}
 export default axios  /*记得导出*/

@@ -2,8 +2,8 @@
   <div class="mod-section">
     <div class="mod-block">
       <not-login v-if="!loginOrNot"/>
-      <sider v-if="loginOrNot" :uid="uid"/>
-      <Content v-if="loginOrNot"/>
+      <sider v-if="loginOrNot" @childrenValue="getFun" :uid="uid"/>
+      <Content :type="type" :id="id" v-if="loginOrNot"/>
     </div>
   </div>
 </template>
@@ -20,13 +20,22 @@ export default {
   data(){
     return{
       loginOrNot:false,
-      uid:-1
+      uid:-1,
+      type:3,
+      id:-1
+    }
+  },
+  methods: {
+    getFun(type,id) {
+      // console.log(type,id)
+      this.type = type
+      this.id = id
     }
   },
   beforeMount() {
     getLoginStatus()
       .then(res=>{
-        console.log(res)
+        // console.log(res)
         if (res.data.data.account !== null){
           this.loginOrNot = true
           this.uid = res.data.data.account.id
