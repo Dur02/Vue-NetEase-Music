@@ -1,11 +1,11 @@
 <template>
-  <div class="mod_section">
+  <div class="mod_section" v-if="status">
     <div class="mod_title">
-      <h1>热门歌单</h1>
+      <h1>推荐歌单</h1>
     </div>
 
     <div class="mod_block">
-      <div class="mod_playlist" v-for="(item,index) of hotPlaylist" :key="item.id">
+      <div class="mod_playlist" v-for="(item,index) of playlist" :key="item.id">
         <div class="mod_pic">
           <img :src="getUrl(item)" class="artist-pic" alt="加载失败" @click="toPlaylistDetail(item.id)">
         </div>
@@ -18,17 +18,35 @@
 </template>
 
 <script>
-import {getLoginStatus, personalized, recommendResource} from "@/plugin/axios";
+import {getLoginStatus, recommendResource, recommendSongs} from "@/plugin/axios";
 
 export default {
-  name: "hotPlaylist",
-  data () {
-    return{
-      hotPlaylist: [],
+  name: "recommendResource",
+  data(){
+    return {
+      playlist:[],
+      status:false
     }
   },
-  components: {
-
+  beforeMount() {
+    getLoginStatus()
+        .then(res=>{
+          if (res.data.data.account !== null){
+            this.status = true
+            recommendResource()
+                .then(res=>{
+                  this.playlist = res.data.recommend.slice(0,12)
+                })
+                .catch(err=>{
+                  console.log(err)
+                })
+          }else {
+            this.status = false
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
   },
   methods:{
     toPlaylistDetail(id){
@@ -39,16 +57,6 @@ export default {
       return item.picUrl + "?param=180y180"
     }
   },
-  beforeCreate() {
-    personalized()
-      .then(res => {
-        this.hotPlaylist =res.data.result;
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-
-  }
 }
 </script>
 
@@ -64,7 +72,7 @@ export default {
   text-align: center;
 }
 .mod_title h1{
-  margin: 0 auto 10px auto;
+  margin: 0px auto 10px auto;
   font-family: "微軟正黑體 Light", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
 }
 .mod_block{

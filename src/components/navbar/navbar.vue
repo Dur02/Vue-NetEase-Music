@@ -11,8 +11,11 @@
       <div class="navbar_search">
         <navbar-search></navbar-search>
       </div>
-      <div class="navbar_login">
-        <navbar-login></navbar-login>
+      <div class="navbar_login" @mouseover="setThisVisible(true)" @mouseleave="setThisVisible(false)">
+        <navbar-login @childrenValue="setStatus"></navbar-login>
+        <el-button class="logout" v-if="visible && status" @click="logout">
+          退出登录
+        </el-button>
       </div>
     </div>
     <div class="navbar_lower">
@@ -37,13 +40,16 @@ import navbarLogin from "@/components/navbar/navbarLogin";
 import categories from "@/components/categories/categories";
 import Login from "@/components/login/login";
 import Controller from "@/components/music/controller";
+import {logout} from "@/plugin/axios";
 
 export default {
   name: "navbar",
   data () {
     return{
       navItem:"home",
-      flag:'recommend'
+      flag:'recommend',
+      visible:false,
+      status:false
     }
   },
   components:{
@@ -98,6 +104,22 @@ export default {
     },
     jump(route){
       this.$router.push(route)
+    },
+    setThisVisible(bool){
+      this.visible = bool
+    },
+    setStatus(status){
+      this.status = status
+    },
+    logout(){
+      logout()
+        .then(res=>{
+          // console.log(res)
+          location.reload()
+        })
+        .catch(err=>{
+          console.log(err)
+        })
     }
   }
 }
@@ -165,5 +187,10 @@ export default {
 .low-active{
   color: #296fc7;
   cursor: pointer;
+}
+.logout{
+  position: relative;
+  bottom: 20px;
+  left: 10px;
 }
 </style>

@@ -406,4 +406,52 @@ export async function mvSublist(){
         method: 'get'
     })
 }
+
+//退出登录
+export async function logout(){
+    return axios({
+        url: `/logout`,
+        method: 'post'
+    })
+}
+
+//获取每日推荐歌单
+export async function recommendResource(){
+    return axios({
+        url: `/recommend/resource`,
+        method: 'get'
+    })
+}
+
+//获取每日推荐歌曲
+export async function recommendSongs(){
+    return axios({
+        url: `/recommend/songs`,
+        method: 'get'
+    })
+}
+
+//获取历史日推可用日期列表
+export async function historyRecommend(){
+    return axios({
+        url: `/history/recommend/songs`,
+        method: 'get'
+    })
+}
+
+//获取历史日推详情数据
+export async function historyRecommendSongs(date){
+    return axios({
+        url: `/history/recommend/songs/detail?date=${date}`,
+        method: 'get'
+    })
+}
+
+//获取历史日推详情数据
+export async function personalFm(){
+    return axios({
+        url: `/personal_fm`,
+        method: 'get'
+    })
+}
 export default axios  /*记得导出*/

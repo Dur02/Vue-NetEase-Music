@@ -13,7 +13,6 @@
         <p style="color: #6d6d6d">{{item.mvSize}}个MV</p>
       </div>
     </div>
-
     <div
         class="mvSub"
         v-if="type === 2"

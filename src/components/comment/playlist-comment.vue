@@ -113,7 +113,7 @@ export default {
   beforeMount() {
     playlistComment(this.$route.query.id,(this.currentPage-1)*20)
     .then(res=>{
-      console.log(res)
+      // console.log(res)
       this.commentData = res.data
       this.total = this.commentData.total
       if (res.data.hotComments){

@@ -56,6 +56,7 @@
         </el-menu-item-group>
       </el-sub-menu>
     </el-menu>
+    <div style="width: 100%;height: 100px;background-color: #fff"></div>
   </div>
 </template>
 

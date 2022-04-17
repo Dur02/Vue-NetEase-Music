@@ -67,7 +67,7 @@ export default {
       this.lyricIndex = -1  //否则切换后原循环还在进行，歌词会上下跳动，对不上旋律
       lyric(this.$store.state.playing)  //获取歌词并修改格式
           .then(res=>{
-            // console.log(res)
+            console.log(res)
             let lyricArr = res.data.lrc.lyric.split('[').slice(1); // 先以[进行分割
             let lrcObj = {};
             lyricArr.forEach(item => {
@@ -75,7 +75,8 @@ export default {
               // 时间换算成秒
               let m = parseInt(arr[0].split(':')[0])
               let s = parseInt(arr[0].split(':')[1])
-              arr[0] = m*60 + s;
+              // let ms = parseInt(arr[0].split(':')[2])
+              arr[0] = m*60 + s ;
               if (arr[1] !== '\n') { // 去除歌词中的换行符
                 lrcObj[arr[0]] = arr[1];
               }
@@ -94,12 +95,12 @@ export default {
             this.isShowMusicList = false
           })
     },
-    '$store.state.value':function () {
+    '$store.state.value':function () {  //监听歌曲播放进度滚动歌词
       // console.log("index",this.lyricIndex)
       // console.log("flag",this.flag)
       for (this.flag =0;this.flag<=this.lyricArr.length;this.flag++){
         // console.log("flag",this.flag)
-        // console.log("value",this.$store.state.value.toFixed(0))
+        // console.log("value",this.$store.state.value.toFixed(2))
         if (this.$store.state.value.toFixed(0) == null){
           return
         }

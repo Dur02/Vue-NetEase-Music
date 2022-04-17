@@ -3,7 +3,6 @@
     <div class="mod_section">
       <div class="mod_playlist">
         <div class="pic_block">
-          <!--        <img class="playlist_pic" :src="playlist.coverImgUrl"/>-->
           <img class="playlist_pic" :src="getUrl(playlist)" alt="加载失败"/>
         </div>
         <div class="playlist_inf">
@@ -11,8 +10,8 @@
             <p>{{playlist.name}}</p>
           </div>
           <div class="creator">
-            <img class="comment" :src="avatarUrl" alt="加载失败"/>
-            <span class="nickname">{{nickname}}</span>
+            <img class="creator-avatar" :src="avatarUrl" alt="加载失败"/>
+            <span class="creator-nickname">{{nickname}}</span>
             <span class="create_time">{{createTime}}创建</span>
             <span class="play_count">播放:&nbsp;<span>{{playlist.playCount}}</span>次</span>
           </div>
@@ -31,7 +30,12 @@
       </div>
     </div>
 
-    <div class="mod_section">
+    <div class="mod_sort">
+      <categories title="详情" :class="{active:type===1}" @click="change(1)"></categories>
+      <categories title="评论" :class="{active:type===2}" @click="change(2)"></categories>
+    </div>
+
+    <div class="mod_section" v-if="type ===1">
       <div class="mod_playlist">
         <ul>
           <li v-for="item in this.songs" :key="item.id">
@@ -59,6 +63,97 @@
         </ul>
       </div>
     </div>
+
+    <div class="mod-comment" v-if="type === 2">
+      <div class="mod_card">
+        <el-divider />
+        <h1>评论</h1>
+        <span class="total">共{{total}}条评论</span>
+        <el-divider />
+        <b v-if="hotComments.length !== 0">精彩评论</b>
+        <el-divider />
+        <el-card v-for="item of hotComments" :key="item.commentId" v-if="hotComments.length !== 0" class="box-card">
+          <div class="comment">
+            <el-row>
+              <el-col :span="1">
+                <el-avatar shape="square" :size="50" :src=getAvatarUrl(item) />
+              </el-col>
+              <el-col :span="23">
+                <el-row>
+                  <el-col :span="24">
+                    <div class="nickname">
+                      {{item.user.nickname}} :
+                      <span class="comment-content">
+                    {{item.content}}
+                  </span>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row v-for="item2 of item.beReplied" v-if="item.beReplied.length !== 0">
+                  <el-card class="beReplied">
+                    <div class="nickname">
+                      {{item2.user.nickname}} :
+                      <span class="comment-content">
+                    {{item2.content}}
+                  </span>
+                    </div>
+                  </el-card>
+                </el-row>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="5">
+                <p>{{item.timeStr}}</p>
+              </el-col>
+              <el-col :span="2" :offset="17" :push="1">
+                <p>
+                  <i class="iconfont icon-dianzan"></i>
+                  ({{item.likedCount}})
+                </p>
+              </el-col>
+            </el-row>
+          </div>
+        </el-card>
+        <el-divider v-if="hotComments.length !== 0" />
+        <b v-if="comments.length !== 0" style="margin-top: 20px">全部评论</b>
+        <el-divider />
+        <el-card v-for="item of comments" :key="item.commentId" v-if="comments.length !== 0" class="box-card">
+          <div class="comment">
+            <el-row>
+              <el-col :span="1">
+                <el-avatar shape="square" :size="50" :src=getAvatarUrl(item) />
+              </el-col>
+              <el-col :span="23">
+                <div class="nickname">
+                  {{item.user.nickname}} :
+                  <span class="comment-content">
+                {{item.content}}
+              </span>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="5">
+                <p>{{item.timeStr}}</p>
+              </el-col>
+              <el-col :span="2" :offset="17" :push="1">
+                <p>
+                  <i class="iconfont icon-dianzan"></i>
+                  ({{item.likedCount}})
+                </p>
+              </el-col>
+            </el-row>
+          </div>
+        </el-card>
+      </div>
+    </div>
+    <el-pagination
+        layout="prev, pager, next"
+        :total="total"
+        class="pagination"
+        :page-size="20"
+        v-model:current-page="currentPage"
+    />
     <div style="width: 100%;height: 100px;"></div>
   </div>
 </template>
@@ -66,11 +161,12 @@
 <script>
 import PlaylistBar from "@/components/playlist/playlistBar";
 import PlaylistSong from "@/components/playlist/playlistSong";
-import {playlistDetail, songDetail, songUrl} from "@/plugin/axios";
+import Categories from "@/components/categories/categories";
+import {playlistDetail, songDetail, songUrl, playlistComment} from "@/plugin/axios";
 import {formatDate} from "@/common/date";
 export default {
   name: "content",
-  components: {PlaylistSong, PlaylistBar},
+  components: {PlaylistSong, PlaylistBar, Categories},
   data() {
     return{
       playlist:"",
@@ -81,6 +177,12 @@ export default {
       trackIds:"", //用字符串几下歌曲全部id，一次请求获取全部地址
       songs:[],
       songUrl:{},
+      type:1,
+      commentData:{},
+      hotComments:[],
+      comments:[],
+      total:0,
+      currentPage:1,
     }
   },
   props:{
@@ -91,6 +193,14 @@ export default {
     getUrl (item) {
       // console.log(url)
       return item.coverImgUrl + "?param=180y180"
+    },
+    getAvatarUrl(item){
+      item = item.user.avatarUrl+'?param=80y80'
+      return item
+    },
+    change(type){
+      this.type = type
+      this.currentPage = 1
     },
     hitMe(songId) {
       songUrl(this.trackIds)
@@ -117,6 +227,7 @@ export default {
     id:function (newVal,oldVal){
       playlistDetail(this.id)
           .then(res=>{
+            this.currentPage = 1
             this.trackIds = ""
             //上部处理
             this.playlist = res.data.playlist
@@ -130,7 +241,7 @@ export default {
             this.createTime = formatDate(date,'yyyy年MM月dd日')
 
             //下部处理
-            console.log(res)
+            // console.log(res)
             let Ids = res.data.playlist.trackIds
             let length = res.data.playlist.trackIds.length
             // console.log(Ids)
@@ -155,7 +266,33 @@ export default {
           .catch(err=>{
             console.log(err)
           })
-    }
+      playlistComment(this.id,(this.currentPage-1)*20)
+          .then(res=>{
+            console.log(res)
+            this.commentData = res.data
+            this.total = this.commentData.total
+            if (res.data.hotComments){
+              this.hotComments = this.commentData.hotComments
+            }else{
+              this.hotComments = []
+            }
+            this.comments = this.commentData.comments
+          })
+    },
+    currentPage:function (newVal,oldVal) {
+      playlistComment(this.id,(newVal-1)*20)
+          .then(res=>{
+            console.log(res)
+            this.commentData = res.data
+            this.total = this.commentData.total
+            if (res.data.hotComments){
+              this.hotComments = this.commentData.hotComments
+            }else{
+              this.hotComments = []
+            }
+            this.comments = this.commentData.comments
+          })
+    },
   }
 }
 </script>
@@ -205,11 +342,11 @@ export default {
   /*background-color: aquamarine;*/
   height: 40px;
 }
-.comment{
+.creator-avatar{
   width: 40px;
   height: 40px;
 }
-.nickname,.create_time,.play_count{
+.creator-nickname,.create_time,.play_count{
   height: 40px;
   line-height: 40px;
   position: relative;
@@ -227,6 +364,17 @@ export default {
 .description{
   white-space: pre-wrap;
   word-break: break-all;
+}
+.mod_sort{
+  width: 100%;
+  border-left: #d5d5d5 1px solid;
+  border-right: #d5d5d5 1px solid;
+  margin: 0 auto;
+  background-color: #fff;
+  display: flex;
+}
+.active{
+  color: #296fc7;
 }
 .mod_playlist ul{
   list-style: none;
@@ -282,5 +430,40 @@ export default {
 .song:hover , .name:hover , .album:hover{
   color: #296fc7;
   text-decoration: underline;
+}
+
+.mod-comment{
+  width: 100%;
+}
+.mod_card{
+  width: 98%;
+  margin: 0 auto;
+}
+.mod_section h1{
+  display: inline
+}
+.total{
+  margin-left: 20px
+}
+.nickname{
+  position: relative;
+  color: #0077aa;
+  left: 20px;
+  display: inline-block;
+}
+.comment-content{
+  color: black;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;
+}
+.beReplied{
+  background-color: #f2f2f2;
+  width: 100%;
+}
+.pagination{
+  width: 100%;
+  font-size: 16px;
+  text-align: center;
 }
 </style>

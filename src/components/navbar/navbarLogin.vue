@@ -2,17 +2,23 @@
   <button class="login" @click="activeLogin" v-if="status === 0">
     登录
   </button>
-  <img :src="avatarUrl" alt="" class="avatarImg" v-if="status === 1">
+  <img
+      :src="avatarUrl"
+      alt="加载失败"
+      class="avatarImg"
+      v-if="status === 1"
+  >
 </template>
 
 <script>
 import {getLoginStatus} from "@/plugin/axios";
 export default {
   name: "navbar_login",
+  emits: ['childrenValue'],
   data (){
     return{
       status:0,
-      avatarUrl:"",
+      avatarUrl:""
     }
   },
   methods:{
@@ -24,11 +30,12 @@ export default {
     getLoginStatus()
         .then(res => {
           if (res.data.data.account !== null){
+            this.$emit('childrenValue',true)
             this.status = 1
             this.avatarUrl = res.data.data.profile.avatarUrl
+          }else {
+            this.$emit('childrenValue',false)
           }
-          // console.log(this.status)
-          // console.log(res)
         })
   }
 }
@@ -57,4 +64,5 @@ export default {
   border-radius: 25px;
   margin-top: 25px;
 }
+
 </style>
