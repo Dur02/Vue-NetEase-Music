@@ -80,6 +80,11 @@ const routes = [
     name: 'My',
     component: () => import('../views/My.vue'),
   },
+  {
+    path: '/Recommend_Song',
+    name: 'Recommend_Song',
+    component: () => import('../views/Recommend_Song'),
+  },
 ]
 
 const router = createRouter({

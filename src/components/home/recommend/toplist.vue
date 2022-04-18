@@ -67,7 +67,7 @@ export default {
 .mod_index{
   /*height: 500px;*/
   /*background-color: aquamarine;*/
-  width: 65%;
+  width: 70%;
   margin: 0 auto;
 }
 .mod_list{

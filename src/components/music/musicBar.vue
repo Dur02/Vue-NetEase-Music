@@ -94,7 +94,6 @@ export default {
   width: 100%;
   margin-top: 40px;
   margin-bottom: 100px;
-  background-color: aquamarine;
 }
 .song_section{
   position: relative;

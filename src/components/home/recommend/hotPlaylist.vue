@@ -75,7 +75,7 @@ export default {
 .mod_playlist{
   width: 20%;
   height: 100%;
-  margin: 0 20px;
+  margin: 0 29px;
   overflow: hidden;
   display: inline-grid;
 }

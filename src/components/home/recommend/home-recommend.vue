@@ -1,7 +1,7 @@
 <template>
   <div>
     <banner></banner>
-<!--    <personal/>-->
+    <custom/>
     <recommend-resource/>
     <hot-playlist></hot-playlist>
     <newest-album></newest-album>
@@ -15,10 +15,10 @@ import hotPlaylist from "@/components/home/recommend/hotPlaylist";
 import NewestAlbum from "@/components/home/recommend/newestAlbum";
 import Toplist from "@/components/home/recommend/toplist";
 import RecommendResource from "@/components/home/recommend/recommendResource";
-import Personal from "@/components/home/recommend/personal";
+import Custom from "@/components/home/recommend/personal/custom";
 export default {
   name: "home-recommend",
-  components:{Personal, RecommendResource, Banner,hotPlaylist,NewestAlbum,Toplist}
+  components:{Custom, RecommendResource, Banner,hotPlaylist,NewestAlbum,Toplist}
 }
 </script>
 

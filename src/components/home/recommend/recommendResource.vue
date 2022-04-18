@@ -68,7 +68,7 @@ export default {
 }
 .mod_title{
   margin: 0 auto;
-  width: 65%;
+  width: 85%;
   text-align: center;
 }
 .mod_title h1{
@@ -83,7 +83,7 @@ export default {
 .mod_playlist{
   width: 20%;
   height: 100%;
-  margin: 0 20px;
+  margin: 0 29px;
   overflow: hidden;
   display: inline-grid;
 }
