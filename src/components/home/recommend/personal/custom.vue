@@ -63,8 +63,7 @@ export default {
                 this.id = res.data.data.dailySongs[0].id
                 songDetail(this.id)
                   .then(res=>{
-                    console.log(res)
-                    this.imgUrl = res.data.songs[0].al.picUrl + "?param=300y305"
+                    this.imgUrl = res.data.songs[0].al.picUrl + "?param=100y100"
                     this.bg = `background-image: url(\"${this.imgUrl}\");`
                   })
               })
@@ -119,6 +118,8 @@ export default {
   font-size: 150px;
   margin: 0;
   color: #7c9aab;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .description:hover{
   cursor: pointer;
