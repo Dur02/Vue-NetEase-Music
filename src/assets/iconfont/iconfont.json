@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18940614",
+      "name": "电台",
+      "font_class": "diantai",
+      "unicode": "e693",
+      "unicode_decimal": 59027
+    },
+    {
       "icon_id": "1718349",
       "name": "日历29",
       "font_class": "rili27",

@@ -2,7 +2,7 @@
   <div class="mod_section">
     <div class="mod_playlist">
       <ul>
-        <li v-for="item in this.songs" :key="item.id">
+        <li v-for="item of this.songs" :key="item.id">
           <div class="inf">
             <span class="song" @click="hitMe(item.id)">{{item.name}}</span>
             <span class="artists">
@@ -39,7 +39,7 @@ export default {
       id:this.$route.query.id, //歌单id
       trackIds:"", //用字符串几下歌曲全部id，一次请求获取全部地址
       songs:[],
-      songUrl:{},
+      songUrl:[],
     }
   },
   beforeMount() {
@@ -83,6 +83,7 @@ export default {
         this.$store.commit('markSong',songId)
         this.$store.commit('insertList',this.songs)
         this.$store.commit('playOrStop',true)
+        this.$store.commit('change_isPersonalFm',false)
         console.log(this.songUrl)
       })
       .catch(err=>{

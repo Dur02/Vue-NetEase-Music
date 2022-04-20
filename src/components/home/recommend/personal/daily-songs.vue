@@ -11,15 +11,15 @@
       </div>
       <div class="mod_playlist">
         <ul>
-          <li v-for="item in playlist" :key="item.id">
+          <li v-for="item of playlist" :key="item.id">
             <div class="inf">
               <span class="song" @click="hitMe(item.id)">{{item.name}}</span>
               <span class="artists">
-              <span v-for="(item2,index) in item.ar" :key="item2.id" class="name" @click="toArtist(item2.id)">
-                {{item2.name}}
-                <span v-if="index+1 !== item.ar.length">/</span>
+                <span v-for="(item2,index) in item.ar" :key="item2.id" class="name" @click="toArtist(item2.id)">
+                  {{item2.name}}
+                  <span v-if="index+1 !== item.ar.length">/</span>
+                </span>
               </span>
-            </span>
               <span class="album" @click="toAlbum(item.al.id)">{{item.al.name}}</span>
               <span class="duration">
 <!--            化毫秒数为分钟和秒数-->
@@ -65,7 +65,7 @@ export default {
                   this.trackIds += this.playlist.map((item)=>{
                     return (item.id)
                   })
-                  console.log(this.trackIds)
+                  // console.log(this.trackIds)
                 })
                 .catch(err=>{
                   console.log(err)
@@ -87,6 +87,11 @@ export default {
             this.$store.commit('markSong',songId)
             this.$store.commit('insertList',this.playlist)
             this.$store.commit('playOrStop',true)
+            this.$store.commit('change_isPersonalFm',false)
+            // console.log("11111")
+            // console.log(this.playlist)
+            // console.log("22222")
+            // console.log(this.songUrl)
           })
           .catch(err=>{
             console.log(err)

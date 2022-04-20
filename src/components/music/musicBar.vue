@@ -10,7 +10,7 @@
     >
       <i class="iconfont icon-guanbi_o close" @click="drawerClose" style="z-index: 99"></i>
       <div class="song_section">
-        <div class="bg" :style="bg"></div>
+        <div class="bg2" :style="bg"></div>
         <div class="nickname">
           <div class="info">
             <h2>{{name}}</h2>
@@ -98,7 +98,7 @@ export default {
 .song_section{
   position: relative;
 }
-.bg{
+.bg2{
   /*background-color: rgb(255, 255, 255);*/
   width:100%;
   height:90vh;

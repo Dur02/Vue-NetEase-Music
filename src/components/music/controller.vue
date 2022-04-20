@@ -15,7 +15,7 @@
       </div>
 
       <div class="play_control">
-        <span class="iconfont icon-shangyishou" @click="changeSong(2)"></span>
+        <span class="iconfont icon-shangyishou" v-if="this.$store.state.isPersonalFm === false" @click="changeSong(2)"></span>
         <span class="iconfont icon-zanting" v-if="isPlay" @click="playOrStop"></span>
         <span class="iconfont icon-bofang" v-else @click="playOrStop"></span>
         <span class="iconfont icon-xiayishou" @click="changeSong(1)"></span>
@@ -52,10 +52,12 @@
       <div class="volume_slider">
         <el-slider @change="moveTransFormVolume"
                    v-model="transFormVolume"
-                   :show-tooltip="false" width="5px" height="5px"></el-slider>
+                   :show-tooltip="false"
+                   height="5px"
+        />
       </div>
 
-      <div class="other">
+      <div class="other" v-if="this.$store.state.isPersonalFm === false">
         <span @click="changePlayerMode(2)"
               v-if="playerMode === 1"
               class="iconfont icon-suijibofang"></span>
@@ -144,10 +146,17 @@ export default {
     },
     changeSong(num){
       switch (num){
-        case 1:
-          this.$store.commit('changeSong',1)
+        case 1: //下一首
+          if (this.$store.state.isPersonalFm === true){
+            // console.log(this.$store.state.isPersonalFm)
+            this.$store.commit('fmNextSong')
+            break;
+          }else {
+            this.$store.commit('changeSong',1)
+            break;
+          }
           break;
-        case 2:
+        case 2:  //上一首
           this.$store.commit('changeSong',-1)
           break;
       }
@@ -255,7 +264,7 @@ export default {
 .play_control{
   height: 100%;
   padding-top: 18px;
-  flex:1;
+  flex:0.7;
 }
 .other , .volume{
   height: 100%;
@@ -295,7 +304,7 @@ export default {
   color: #296fc7;
 }
 .nowTime , .allTime{
-  flex: 0.5;
+  flex: 0.3;
   padding-top: 30px;
 }
 .volume{
@@ -314,7 +323,7 @@ export default {
   flex: 3;
 }
 .other{
-  flex: 0.8;
+  flex: 0.5;
 }
 .iconfont{
   cursor: pointer;

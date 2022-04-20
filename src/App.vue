@@ -13,27 +13,6 @@
 
 </template>
 
-<style>
-  body{
-    margin: 0px auto;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
-  .el-drawer__body{
-    /*background-color: aqua;*/
-    overflow: auto;
-    scrollbar-width: none; /* firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-  }
-  /*2.隐藏滚动条，太丑了*/
-  .el-drawer ::-webkit-scrollbar{
-    display: none; /* Chrome Safari */
-  }
-  .el-card__body{
-    font-size: 14px;
-  }
-</style>
 <script>
 import Controller from "@/components/music/controller";
 import PlaylistDrawer from "@/components/music/playlist-drawer";
@@ -60,3 +39,28 @@ export default {
   }
 }
 </script>
+
+<style>
+body{
+  margin: 0px auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.el-drawer__body{
+  /*background-color: aqua;*/
+  overflow: auto;
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+/*2.隐藏滚动条，太丑了*/
+.el-drawer ::-webkit-scrollbar{
+  display: none; /* Chrome Safari */
+}
+.el-card__body{
+  font-size: 14px;
+}
+.el-slider{
+  width: 90%;
+}
+</style>

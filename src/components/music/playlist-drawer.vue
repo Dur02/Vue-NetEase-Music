@@ -40,6 +40,7 @@ export default {
     hitMe(songId) {
       this.$store.commit('markSong',songId)
       this.$store.commit('playOrStop',true)
+      this.$store.commit('change_isPersonalFm',false)
     },
     toArtist(id){
       this.$router.push({path:'/Artist',query:{id:id}})

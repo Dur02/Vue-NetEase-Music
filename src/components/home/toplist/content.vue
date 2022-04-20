@@ -210,6 +210,7 @@ export default {
             this.$store.commit('markSong',songId)
             this.$store.commit('insertList',this.songs)
             this.$store.commit('playOrStop',true)
+            this.$store.commit('change_isPersonalFm',false)
             console.log(this.songUrl)
           })
           .catch(err=>{

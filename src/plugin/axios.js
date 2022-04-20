@@ -450,7 +450,7 @@ export async function historyRecommendSongs(date){
 //获取历史日推详情数据
 export async function personalFm(){
     return axios({
-        url: `/personal_fm`,
+        url: `/personal_fm?timerstamp=${Date.now()}`,
         method: 'get'
     })
 }

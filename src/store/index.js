@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import {userPlaylist} from "@/plugin/axios";
+import {getLoginStatus, personalFm, recommendSongs, songDetail, songUrl, userPlaylist} from "@/plugin/axios";
 
 export default createStore({
   state: {
@@ -12,6 +12,7 @@ export default createStore({
     drawerFlag:false, //drawer的绑定数据
     lyricFlag:false, //歌词详情页标志
     value:-1,
+    isPersonalFm:false
   },
   mutations: {
     activeLogin (state) {
@@ -84,10 +85,45 @@ export default createStore({
     },
     change_value(state,value){
       state.value = value
+    },
+    change_isPersonalFm(state,bool){
+      state.isPersonalFm = bool
+    },
+    fmNextSong(state){  //处理私人Fm换歌
+      // console.log(state.songUrl)
+      personalFm()
+        .then(res=>{
+          console.log(res)
+          let trackIds = ""
+          trackIds += res.data.data.map((item)=>{
+            return (item.id)
+          })
+          songDetail(trackIds)
+            .then(res=>{
+              // console.log(res)
+              state.songs = res.data.songs
+              songUrl(trackIds)
+                .then(res=>{
+                  state.songUrl = res.data.data
+                  state.playing = state.songs[0].id
+                })
+                .catch(err=>{
+                  console.log(err)
+                })
+            })
+            .catch(err=>{
+              console.log(err)
+            })
+        })
+        .catch(err=>{
+          console.log(err)
+        })
     }
   },
   actions: {
+
   },
   modules: {
+
   }
 })
