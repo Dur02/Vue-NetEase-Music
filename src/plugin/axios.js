@@ -330,7 +330,7 @@ export async function MVComment(id,offset){
 //获取用户歌单
 export async function userPlaylist(uid,limit,offset){
     return axios({
-        url: `/user/playlist?uid=${uid}&limit=${limit}&offset=${offset}`,
+        url: `/user/playlist?uid=${uid}&limit=${limit}&offset=${offset}&timerstamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -386,7 +386,7 @@ export async function allAlbum(area,limit,offset){
 //获取用户订阅的各种资源数量
 export async function userSubCount(){
     return axios({
-        url: `/user/subcount`,
+        url: `/user/subcount?timerstamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -394,7 +394,7 @@ export async function userSubCount(){
 //获取用户收藏的歌手列表
 export async function arSublist(){
     return axios({
-        url: `/artist/sublist`,
+        url: `/artist/sublist?timerstamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -402,7 +402,7 @@ export async function arSublist(){
 //获取用户收藏的MV列表
 export async function mvSublist(){
     return axios({
-        url: `/mv/sublist`,
+        url: `/mv/sublist?timerstamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -451,6 +451,14 @@ export async function historyRecommendSongs(date){
 export async function personalFm(){
     return axios({
         url: `/personal_fm?timerstamp=${Date.now()}`,
+        method: 'get'
+    })
+}
+
+//收藏/取消收藏歌单
+export async function plSub(t,id){
+    return axios({
+        url: `/playlist/subscribe?t=${t}&id=${id}&timerstamp=${Date.now()}`,
         method: 'get'
     })
 }

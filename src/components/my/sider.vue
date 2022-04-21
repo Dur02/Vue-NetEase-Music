@@ -94,7 +94,7 @@ export default {
       .catch(err=>{
         console.log(err)
       })
-    userPlaylist(this.uid,100,0) //做的是侧边栏，不方便做分页，先取100，后续可加大或者改样式
+    userPlaylist(this.uid,1000,0) //做的是侧边栏，不方便做分页，先取1000，后续可加大或者改样式
       .then(res=>{
         // console.log(res)
         this.selfCreate = res.data.playlist.filter(
