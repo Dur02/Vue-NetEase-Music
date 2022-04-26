@@ -12,6 +12,7 @@
           {{item}}&nbsp;
         </span>
       </span>
+      <el-button class="sub_btn" type="primary" @click="arSub">{{btnContent}}</el-button>
     </p>
     <div class="mod_pic">
       <img :src="picUrl" alt="加载失败" class="artist_pic">
@@ -20,17 +21,59 @@
 </template>
 
 <script>
-import {artist} from "@/plugin/axios";
+import {arSub, arSublist, artist, mvSUb, mvSublist} from "@/plugin/axios";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "artistBar",
   data () {
     return{
       picUrl:"",
-      artist:""
+      artist:"",
+      btnContent:"收藏"
+    }
+  },
+  methods:{
+    arSub(){
+      if (this.btnContent === "收藏"){
+        arSub(1,this.$route.query.id)
+            .then(res=>{
+              console.log(res)
+              if (res.data.code === 200){
+                this.btnContent = "取消收藏"
+              }else {
+                ElMessage(res.data.message)
+              }
+            })
+      }else {
+        arSub(0,this.$route.query.id)
+            .then(res=>{
+              console.log(res)
+              if (res.data.code === 200){
+                this.btnContent = "收藏"
+              }else {
+                ElMessage(res.data.msg)
+              }
+            })
+      }
     }
   },
   beforeMount() {
+    arSublist()
+        .then(res=>{
+          console.log(res)
+          const arr = res.data.data
+          arr.map(
+              (item)=>{
+                if (item.id === parseInt(this.$route.query.id)){
+                  this.btnContent = "取消收藏"
+                }
+              }
+          )
+        })
+        .catch(err=>{
+          console.log(err)
+        })
     artist(this.$route.query.id)
     .then(res=>{
       this.artist = res.data.artist
@@ -65,6 +108,10 @@ export default {
 .mod_pic{
   text-align: center;
   margin-top: 10px;
+}
+.sub_btn{
+  float: right;
+  margin-right: 20px;
 }
 .artist_pic{
   width: 405px;
