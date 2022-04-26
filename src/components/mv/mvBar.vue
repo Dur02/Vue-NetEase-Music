@@ -1,8 +1,9 @@
 <template>
   <div class="mod_mv">
-    <p class="icon-MV iconfont">
-      <span>{{mvDetail.name}}</span>
+    <p class="icon-MV iconfont" style="color: #7c9aab">
+      <span style="color: #000">{{mvDetail.name}}</span>
       <span @click="toArtist(mvDetail.artistId)">{{mvDetail.artistName}}</span>
+      <el-button class="sub_btn" type="primary" @click="mvSub">{{btnContent}}</el-button>
     </p>
     <video class="mv_play" :src="mvUrl" controls="controls" autoplay="autoplay" height="500" width="700">
       您的浏览器不支持 video 标签。
@@ -24,8 +25,9 @@
 </template>
 
 <script>
-import {mvDetail , mvUrl} from "@/plugin/axios";
+import {mvDetail, mvSUb, mvSublist, mvUrl} from "@/plugin/axios";
 import {numberFix} from "@/common/date"
+import { ElMessage } from 'element-plus'
 
 export default {
   name: "mvBar",
@@ -33,40 +35,79 @@ export default {
     return{
       mvDetail:"",
       mvUrl:"",
-      playCount:""
+      playCount:"",
+      btnContent:"收藏"
     }
   },
   methods:{
     toArtist(id){
       this.$router.push({path:'/Artist',query:{id:id}})
     },
+    mvSub(){
+      if (this.btnContent === "收藏"){
+        mvSUb(1,this.$route.query.id)
+          .then(res=>{
+            console.log(res)
+            if (res.data.code === 200){
+              this.btnContent = "取消收藏"
+            }else {
+              ElMessage(res.data.message)
+            }
+          })
+      }else {
+        mvSUb(0,this.$route.query.id)
+            .then(res=>{
+              console.log(res)
+              if (res.data.code === 200){
+                this.btnContent = "收藏"
+              }else {
+                ElMessage(res.data.msg)
+              }
+            })
+      }
+    }
     // stopMV(){
     //   this.$store.commit('mvStatus',false)
     // }
   },
   beforeMount() {
     // console.log(this.$route.query.id)
-    mvDetail(this.$route.query.id)
-    .then(res=>{
-      // console.log(res)
-      this.mvDetail = res.data.data
-      console.log(this.mvDetail)
-      let num = this.mvDetail.playCount
-      this.playCount = numberFix(num)
-      // console.log(this.playCount)
-      mvUrl(this.$route.query.id)
+    mvSublist()
       .then(res=>{
         console.log(res)
-        this.mvUrl = res.data.data.url
-        console.log(this.mvUrl)
+        const arr = res.data.data
+        arr.map(
+            (item)=>{
+              if (item.vid === this.$route.query.id){
+                this.btnContent = "取消收藏"
+              }
+            }
+        )
       })
       .catch(err=>{
         console.log(err)
       })
-    })
-    .catch(err=>{
-      console.log(err)
-    })
+    mvDetail(this.$route.query.id)
+      .then(res=>{
+        // console.log(res)
+        this.mvDetail = res.data.data
+        // console.log(this.mvDetail)
+        let num = this.mvDetail.playCount
+        this.playCount = numberFix(num)
+        // console.log(this.playCount)
+        mvUrl(this.$route.query.id)
+          .then(res=>{
+            console.log(res)
+            this.mvUrl = res.data.data.url
+            // console.log(this.mvUrl)
+          })
+        .catch(err=>{
+          console.log(err)
+        })
+      })
+      .catch(err=>{
+        console.log(err)
+      })
   }
 }
 </script>
@@ -103,6 +144,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.sub_btn{
+  float: right;
+  margin-right: 20px;
 }
 .description{
   white-space: pre-wrap;

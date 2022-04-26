@@ -34,7 +34,7 @@ export default {
   beforeCreate() {
     banner()
     .then(res=>{
-      // console.log(res)
+      console.log(res)
       this.bannerList = res.data.banners
       // console.log(this.bannerList)
     })

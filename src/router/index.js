@@ -85,6 +85,11 @@ const routes = [
     name: 'Recommend_Song',
     component: () => import('../views/Recommend_Song'),
   },
+  {
+    path: '/refresh',
+    name: 'refresh',
+    component: () => import('../common/refresh'),
+  },
 ]
 
 const router = createRouter({

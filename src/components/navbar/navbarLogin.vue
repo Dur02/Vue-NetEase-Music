@@ -17,7 +17,7 @@ export default {
   emits: ['childrenValue'],
   data (){
     return{
-      status:0,
+      status:-1,
       avatarUrl:""
     }
   },

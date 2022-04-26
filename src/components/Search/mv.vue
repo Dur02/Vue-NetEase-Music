@@ -65,6 +65,7 @@ export default {
                   // console.log(this.mvs)
                 })
                 .catch(err=>{
+                  this.mvCount = 0
                   console.log(err)
                 })
           })
@@ -80,6 +81,7 @@ export default {
             // console.log(this.mvs)
           })
           .catch(err=>{
+            this.mvCount = 0
             console.log(err)
           })
     }

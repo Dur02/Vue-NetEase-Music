@@ -462,4 +462,20 @@ export async function plSub(t,id){
         method: 'get'
     })
 }
+
+//收藏/取消收藏歌手
+export async function arSub(t,id){
+    return axios({
+        url: `/artist/sub?t=${t}&id=${id}&timerstamp=${Date.now()}`,
+        method: 'get'
+    })
+}
+
+//收藏/取消收藏MV
+export async function mvSUb(t,mvid){
+    return axios({
+        url: `/mv/sub?t=${t}&mvid=${mvid}&timerstamp=${Date.now()}`,
+        method: 'get'
+    })
+}
 export default axios  /*记得导出*/

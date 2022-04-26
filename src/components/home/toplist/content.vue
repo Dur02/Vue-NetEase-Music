@@ -255,7 +255,7 @@ export default {
                   break
               }
               if (this.$route.path === '/My'){
-                location.reload()
+                this.$router.push('/refresh')  //跟navSearch不同，此处push自身的话是没有参数的，通过refresh中转刷新页面
               }
             }else {
               ElMessage("发生错误，请稍后重试")

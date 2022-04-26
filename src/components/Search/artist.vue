@@ -64,6 +64,7 @@ export default {
                 })
           })
           .catch(err=>{
+            this.artistCount = 0
             console.log(err)
           })
     }else{
@@ -75,6 +76,7 @@ export default {
             // console.log(this.artists)
           })
           .catch(err=>{
+            this.artistCount = 0
             console.log(err)
           })
     }

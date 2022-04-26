@@ -182,6 +182,7 @@ export default {
                   })
             })
             .catch(err=>{
+              this.songCount = 0
               console.log(err)
             })
       }else{
@@ -209,6 +210,7 @@ export default {
               // console.log(this.songs)
             })
             .catch(err=>{
+              this.songCount = 0
               console.log(err)
             })
       }

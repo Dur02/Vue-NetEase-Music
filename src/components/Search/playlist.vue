@@ -63,6 +63,7 @@ export default {
                 })
           })
           .catch(err=>{
+            this.playlistCount = 0
             console.log(err)
           })
     }else{
@@ -74,6 +75,7 @@ export default {
             // console.log(this.playlists)
           })
           .catch(err=>{
+            this.playlistCount = 0
             console.log(err)
           })
     }

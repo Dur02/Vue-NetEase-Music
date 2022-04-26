@@ -69,6 +69,7 @@ export default {
                 })
           })
           .catch(err=>{
+            this.albumCount = 0
             console.log(err)
           })
     }else{
@@ -80,6 +81,7 @@ export default {
             // console.log(this.albums)
           })
           .catch(err=>{
+            this.albumCount = 0
             console.log(err)
           })
     }
