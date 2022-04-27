@@ -76,6 +76,7 @@
 <script>
 import {formatSecondTime} from "@/common/date";
 import {songDetail} from "@/plugin/axios";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "controller",
@@ -106,6 +107,11 @@ export default {
           // console.log(res)
           this.musicInf = res.data.songs[0]
           this.picUrl = this.musicInf.al.picUrl + "?param=80y80"
+          if (res.data.songs[0].fee === 4){
+            this.changeSong(1)
+          }else if (res.data.songs[0].fee === 1){
+            ElMessage.warning("VIP歌曲，正在试听")
+          }
         })
         .catch(err=>{
           console.log(err)
@@ -223,6 +229,12 @@ export default {
         // console.log(res)
         this.musicInf = res.data.songs[0]
         this.picUrl = this.musicInf.al.picUrl + "?param=80y80"
+        if (res.data.songs[0].fee === 4){
+          ElMessage.warning("付费歌曲，为你切换下一首")
+          this.changeSong(1)
+        }else if (res.data.songs[0].fee === 1){
+          ElMessage.warning("VIP歌曲，正在试听")
+        }
       })
       .catch(err=>{
         console.log(err)

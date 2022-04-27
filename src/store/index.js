@@ -21,22 +21,30 @@ export default createStore({
     activeHidden (state) {
       state.activeLogin = false
     },
-    addSong(state,songUrl){  //不重复的把歌曲的地址加入，否则多次点击会导致同一歌曲的地址重复加入
-      state.songUrl = state.songUrl.concat(songUrl)
-      let temp = []
-      for(let item1 of state.songUrl){  //循环数组对象的内容
-        let flag = true;  //建立标记，判断数据是否重复，true为不重复
-        for(let item2 of temp){  //循环新数组的内容
-          if(item1.id === item2.id){ //让数组对象的内容与新数组的内容作比较，相同的话，改变标记为false
-            flag = false;
-          }
-        }
-        if(flag){ //判断是否重复
-          temp.push(item1); //不重复的放入新数组。  新数组的内容会继续进行上边的循环。
-        }
-        state.songUrl = temp
-      }
-      // console.log(this.state.songUrl.length)
+    addSong(state,songUrl){ //更新歌曲url
+
+      //不重复的把歌曲的地址加入，否则多次点击会导致同一歌曲的地址重复加入
+      // // state.songUrl = state.songUrl.concat(songUrl)
+      // for(let item1 of songUrl){  //循环数组对象的内容
+      //   let flag = true;  //建立标记，判断数据是否重复，true为不重复
+      //   for(let item2 of state.songUrl){  //循环新数组的内容
+      //     if(item1.id === item2.id){ //让数组对象的内容与新数组的内容作比较，相同的话，改变标记为false
+      //       flag = false;
+      //     }
+      //   }
+      //   if(flag){ //判断是否重复
+      //     state.songUrl.push(item1); //不重复的放入新数组,新数组的内容会继续进行上边的循环。
+      //   }
+      // }
+      // // state.songUrl += temp
+      // console.log(state.songUrl)
+      // // console.log(this.state.songUrl.length)
+
+      //上面的方法是可用的，不过逻辑不同，上面的会把更新时基于原本的数据，就是循环原数据，把要插入的数据中重复的歌曲排除后插入，这样就不会发生
+      //同一歌曲多次插入的情况，而且原本的数据也不会丢失，当用户切换歌单播放，原播放列表的数据也依然存在
+      //但每次用户切换歌单数据都会越来越大，通过对多个播放器的使用发现都是当切换歌单后把整个播放列表更新的方法所以暂时更换方法
+      //可考虑加个清空功能，但操作会很繁琐，部分逻辑也要更改
+      state.songUrl = songUrl
     },
     markSong(state,songId){
       state.playing = songId
@@ -68,7 +76,22 @@ export default createStore({
         }
       }
     },
+    //更新用户播放列表
     insertList(state,userPlaylist) {
+
+      // for(let item1 of userPlaylist){
+      //   let flag = true;
+      //   for(let item2 of state.userPlaylist){
+      //     if(item1.id === item2.id){
+      //       flag = false;
+      //     }
+      //   }
+      //   if(flag){ //判断是否重复
+      //     state.userPlaylist.push(item1);
+      //   }
+      // }
+      // console.log(state.userPlaylist)
+
       state.userPlaylist = userPlaylist
     },
     changePlayerMode(state,num){
