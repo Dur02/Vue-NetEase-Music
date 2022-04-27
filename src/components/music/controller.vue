@@ -15,10 +15,13 @@
       </div>
 
       <div class="play_control">
-        <span class="iconfont icon-shangyishou" v-if="this.$store.state.isPersonalFm === false" @click="changeSong(2)"></span>
+        <span class="iconfont icon-shangyishou" v-if="!this.$store.state.isPersonalFm" @click="changeSong(2)"></span>
+        <span class="iconfont icon-lajitong" v-if="this.$store.state.isPersonalFm" @click="fmTrash"></span>
         <span class="iconfont icon-zanting" v-if="isPlay" @click="playOrStop"></span>
         <span class="iconfont icon-bofang" v-else @click="playOrStop"></span>
         <span class="iconfont icon-xiayishou" @click="changeSong(1)"></span>
+        <span class="iconfont icon-aixin" v-if="!like" @click="songLike"></span>
+        <span class="iconfont icon-aixin_shixin" v-if="like" @click="cancelLike"></span>
       </div>
 
       <div class="nowTime">{{playerNowTime}}</div>
@@ -75,7 +78,7 @@
 
 <script>
 import {formatSecondTime} from "@/common/date";
-import {songDetail} from "@/plugin/axios";
+import {addOrDelSongs, fmTrash, getLoginStatus, getUserLike, songDetail, songLike, userPlaylist} from "@/plugin/axios";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -93,6 +96,7 @@ export default {
       playing:-1,
       musicInf:{},
       picUrl:"",
+      like:false
     }
   },
   beforeMount() {
@@ -103,19 +107,30 @@ export default {
     }
     this.playing = this.$store.state.playing
     songDetail(this.playing)
-        .then(res=>{
-          // console.log(res)
-          this.musicInf = res.data.songs[0]
-          this.picUrl = this.musicInf.al.picUrl + "?param=80y80"
-          if (res.data.songs[0].fee === 4){
-            this.changeSong(1)
-          }else if (res.data.songs[0].fee === 1){
-            ElMessage.warning("VIP歌曲，正在试听")
-          }
-        })
-        .catch(err=>{
-          console.log(err)
-        })
+      .then(res=>{
+        // console.log(res)
+        this.musicInf = res.data.songs[0]
+        this.picUrl = this.musicInf.al.picUrl + "?param=80y80"
+        if (res.data.songs[0].fee === 4){
+           this.changeSong(1)
+        }else if (res.data.songs[0].fee === 1){
+          ElMessage.warning("VIP歌曲，正在试听")
+        }
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    getUserLike()
+      .then(res=>{
+        const likeArr = res.data.ids
+        likeArr.map(
+            (item)=>{
+              if (item === this.playing){
+                this.like = true
+              }
+            }
+        )
+      })
     // console.log(this.playing)
   },
   methods: {
@@ -214,6 +229,55 @@ export default {
     },
     openLyric(){
       this.$store.commit("set_lyricFlag",true)
+    },
+    fmTrash(){
+      fmTrash(this.playing)
+        .then(res=>{
+          console.log(res)
+          if (res.data.code === 200){
+            this.$store.commit('fmNextSong')
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    },
+    songLike(){
+      songLike(this.playing)
+          .then(res=>{
+            console.log(res)
+            if (res.data.code === 200){
+              ElMessage.success("收藏成功")
+              this.like = true
+            }else {
+              ElMessage.success(res.data.msg)
+            }
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+    },
+    cancelLike(){
+      getLoginStatus()
+        .then(res=>{
+          // console.log(res)
+          const uid = res.data.data.account.id
+          userPlaylist(uid,1,0)
+            .then(res=>{
+              const id = res.data.playlist[0].id
+              addOrDelSongs("del",id,this.playing)
+                .then(res=>{
+                  console.log(res)
+                  if (res.data.body.code === 200){
+                    ElMessage.success('取消喜欢成功')
+                    this.like = false
+                    if (this.$route.path === '/My'){
+                      this.$router.push('/refresh')
+                    }
+                  }
+                })
+            })
+        })
     }
   },
   watch:{
@@ -223,6 +287,7 @@ export default {
         this.songUrl = this.$store.state.songUrl.filter(element => element.id === this.$store.state.playing)[0].url
         // console.log(this.songUrl)
       }
+      this.like = false
       this.playing = this.$store.state.playing
       songDetail(this.playing)
       .then(res=>{
@@ -239,6 +304,17 @@ export default {
       .catch(err=>{
         console.log(err)
       })
+      getUserLike()
+          .then(res=>{
+            const likeArr = res.data.ids
+            likeArr.map(
+                (item)=>{
+                  if (item === this.playing){
+                    this.like = true
+                  }
+                }
+            )
+          })
       // console.log(this.playing)
     },
     //playerMode(newVal,oldVal)
@@ -284,7 +360,7 @@ export default {
 }
 .play_control span , .other span ,.volume span{
   font-size: 32px;
-  margin: 0 10px;
+  margin: 0 4px;
   vertical-align: middle;
 }
 .play_control .icon-bofang , .play_control .icon-zanting{

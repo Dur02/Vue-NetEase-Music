@@ -229,7 +229,7 @@ export default {
             this.$store.commit('insertList',this.songs)
             this.$store.commit('playOrStop',true)
             this.$store.commit('change_isPersonalFm',false)
-            console.log(this.songUrl)
+            // console.log(this.songUrl)
           })
           .catch(err=>{
             console.log(err)
@@ -267,7 +267,7 @@ export default {
     id:function (newVal,oldVal){
       playlistDetail(this.id)
           .then(res=>{
-            console.log(res)
+            // console.log(res)
             this.currentPage = 1
             this.trackIds = ""
             //上部处理
@@ -316,10 +316,10 @@ export default {
               this.uid = res.data.data.account.id
               userPlaylist(this.uid,1000,0) //做的是侧边栏，不方便做分页，先取1000，后续可加大或者改样式
                   .then(res=>{
-                    console.log(res)
+                    // console.log(res)
                     for (let item of res.data.playlist){
                       if (item.id === parseInt(this.id)){
-                        console.log(this.id)
+                        // console.log(this.id)
                         this.subTip = "取消收藏"
                         this.show = true
                       }

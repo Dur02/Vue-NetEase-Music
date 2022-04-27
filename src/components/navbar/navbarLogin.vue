@@ -34,6 +34,7 @@ export default {
             this.status = 1
             this.avatarUrl = res.data.data.profile.avatarUrl
           }else {
+            this.status = 0
             this.$emit('childrenValue',false)
           }
         })

@@ -42,7 +42,7 @@ export function searchAdvice (keywords) {
 //热门搜索
 export function searchHot () {
     return axios({
-        url: `/search/hot`,  //热门搜索
+        url: `/search/hot?&timerstamp=${Date.now()}`,  //热门搜索
         method: 'get'
     });
 }
@@ -50,7 +50,7 @@ export function searchHot () {
 //获取验证码
 export async function getCaptcha (phone) {
     return axios({
-        url: `/captcha/sent?phone=${phone}`,  //获取验证码
+        url: `/captcha/sent?phone=${phone}&timerstamp=${Date.now()}`,  //获取验证码
         method: 'get'
     });
 }
@@ -58,7 +58,7 @@ export async function getCaptcha (phone) {
 //验证码验证
 export async function verify (phone,captcha){
     return axios({
-        url: `/captcha/verify?phone=${phone}&captcha=${captcha}`,  //检验验证码
+        url: `/captcha/verify?phone=${phone}&captcha=${captcha}&timerstamp=${Date.now()}`,  //检验验证码
         method: 'get'
     })
 }
@@ -82,10 +82,11 @@ export async function passwordLogin (phone,password){
 // 检查二维码状态
 export async function checkStatus(key) {
     // console.log(res)
-    return await axios({
+    const res = await axios({
         url: `/login/qr/check?key=${key}&timerstamp=${Date.now()}`,
         withCredentials: true, //关键
-    })
+    });
+    return res
 }
 
 //检查登录状态
@@ -142,7 +143,7 @@ export async function qrlogin() {
 //歌单推荐
 export async function personalized() {
     return axios({
-        url: `/personalized?limit=8`,
+        url: `/personalized?limit=8&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -150,7 +151,7 @@ export async function personalized() {
 //获取轮播图数据
 export async function banner() {
     return axios({
-        url: `/banner`,
+        url: `/banner?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -158,7 +159,7 @@ export async function banner() {
 //获取最新专辑
 export async function newestAlbum() {
     return axios({
-        url: `/album/newest`,
+        url: `/album/newest?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -167,7 +168,7 @@ export async function newestAlbum() {
 export async function topListDetail() {
     // console.log(res)
     return axios({
-        url: `/toplist/detail`,
+        url: `/toplist/detail?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -186,7 +187,7 @@ export async function search(keyword,type,limit,offset) {
 export async function playlistDetail(id){
     // console.log(res)
     return axios({
-        url: `/playlist/detail?id=${id}`,
+        url: `/playlist/detail?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -194,7 +195,7 @@ export async function playlistDetail(id){
 //根据歌单的tracksId查询出全部歌曲信息,或者获取某一个歌曲的信息
 export async function songDetail(ids){
     return axios({
-        url: `/song/detail?ids=${ids}`,
+        url: `/song/detail?ids=${ids}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -202,7 +203,7 @@ export async function songDetail(ids){
 //获取专辑详情
 export async function album(id){
     return axios({
-        url: `/album?id=${id}`,
+        url: `/album?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -210,7 +211,7 @@ export async function album(id){
 //获取歌手信息，包括热门歌曲和部分信息
 export async function artist(id){
     return axios({
-        url: `/artists?id=${id}`,
+        url: `/artists?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -218,7 +219,7 @@ export async function artist(id){
 //获取歌手前50首歌
 export async function artistTop(id){
     return axios({
-        url: `/artist/top/song?id=${id}`,
+        url: `/artist/top/song?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -226,7 +227,7 @@ export async function artistTop(id){
 //获取歌手描述
 export async function artistDesc(id){
     return axios({
-        url: `/artist/desc?id=${id}`,
+        url: `/artist/desc?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -234,7 +235,7 @@ export async function artistDesc(id){
 //获取歌手详情
 export async function artistDetail(id){
     return axios({
-        url: `/artist/detail?id=${id}`,
+        url: `/artist/detail?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -242,7 +243,7 @@ export async function artistDetail(id){
 //获取歌手专辑
 export async function artistAlbum(id,offset){
     return axios({
-        url: `/artist/album?id=${id}&offset=${offset}`,
+        url: `/artist/album?id=${id}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -250,7 +251,7 @@ export async function artistAlbum(id,offset){
 //获取MV数据，不包括地址
 export async function mvDetail(id){
     return axios({
-        url: `/mv/detail?mvid=${id}`,
+        url: `/mv/detail?mvid=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -258,7 +259,7 @@ export async function mvDetail(id){
 //获取MV地址,可通过mvDetail获取分辨率列表，用参数r传入，默认1080p，暂时放置
 export async function mvUrl(id){
     return axios({
-        url: `/mv/url?id=${id}`,
+        url: `/mv/url?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -266,7 +267,7 @@ export async function mvUrl(id){
 //传入type, 资源id可获得对应资源热门评论
 export async function hotCommont(id,type,limit){
     return axios({
-        url: `/comment/hot?id=${id}type=${type}`,
+        url: `/comment/hot?id=${id}type=${type}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -274,7 +275,7 @@ export async function hotCommont(id,type,limit){
 //获取歌手的mv
 export async function artistMv(id,offset){
     return axios({
-        url: `/artist/mv?id=${id}&limit=20&offset=${offset}`,
+        url: `/artist/mv?id=${id}&limit=20&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -282,7 +283,7 @@ export async function artistMv(id,offset){
 //根据音乐的id获取音乐url
 export async function songUrl(id){
     return axios({
-        url: `/song/url?id=${id}`,
+        url: `/song/url?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -290,7 +291,7 @@ export async function songUrl(id){
 //获取歌词
 export async function lyric(id){
     return axios({
-        url: `/lyric?id=${id}`,
+        url: `/lyric?id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -298,7 +299,7 @@ export async function lyric(id){
 //获取单曲评论
 export async function songComment(id,offset){
         return axios({
-            url: `/comment/music?id=${id}&offset=${offset}`,
+            url: `/comment/music?id=${id}&offset=${offset}&timestamp=${Date.now()}`,
             method: 'get'
         })
 }
@@ -306,7 +307,7 @@ export async function songComment(id,offset){
 //获取歌单评论
 export async function playlistComment(id,offset){
     return axios({
-        url: `/comment/playlist?id=${id}&offset=${offset}`,
+        url: `/comment/playlist?id=${id}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -314,7 +315,7 @@ export async function playlistComment(id,offset){
 //获取专辑评论
 export async function albumComment(id,offset){
     return axios({
-        url: `/comment/album?id=${id}&offset=${offset}`,
+        url: `/comment/album?id=${id}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -322,7 +323,7 @@ export async function albumComment(id,offset){
 //获取MV评论
 export async function MVComment(id,offset){
     return axios({
-        url: `/comment/mv?id=${id}&offset=${offset}`,
+        url: `/comment/mv?id=${id}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -330,7 +331,7 @@ export async function MVComment(id,offset){
 //获取用户歌单
 export async function userPlaylist(uid,limit,offset){
     return axios({
-        url: `/user/playlist?uid=${uid}&limit=${limit}&offset=${offset}&timerstamp=${Date.now()}`,
+        url: `/user/playlist?uid=${uid}&limit=${limit}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -338,7 +339,7 @@ export async function userPlaylist(uid,limit,offset){
 //获取歌手全部歌曲
 export async function artistAllSongs(id,limit,offset){
     return axios({
-        url: `/artist/songs?id=${id}&limit=${limit}&offset=${offset}`,
+        url: `/artist/songs?id=${id}&limit=${limit}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -346,7 +347,7 @@ export async function artistAllSongs(id,limit,offset){
 //获取全部榜单
 export async function topList(){
     return axios({
-        url: `/toplist`,
+        url: `/toplist?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -354,7 +355,7 @@ export async function topList(){
 //获取全部歌单分类
 export async function catlist(){
     return axios({
-        url: `/playlist/catlist`,
+        url: `/playlist/catlist?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -362,7 +363,7 @@ export async function catlist(){
 //获取全部歌单分类
 export async function topPlaylist(order,cat,limit,offset){
     return axios({
-        url: `/top/playlist?order=${order}&cat=${cat}&limit=${limit}&offset=${offset}`,
+        url: `/top/playlist?order=${order}&cat=${cat}&limit=${limit}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -370,7 +371,7 @@ export async function topPlaylist(order,cat,limit,offset){
 //获取歌手
 export async function artistList(type,area,initial,limit,offset){
     return axios({
-        url: `/artist/list?type=${type}&area=${area}&initial=${initial}&limit=${limit}&offset=${offset}`,
+        url: `/artist/list?type=${type}&area=${area}&initial=${initial}&limit=${limit}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -378,7 +379,7 @@ export async function artistList(type,area,initial,limit,offset){
 //获取全部新碟
 export async function allAlbum(area,limit,offset){
     return axios({
-        url: `/album/new?area=${area}&limit=${limit}&offset=${offset}`,
+        url: `/album/new?area=${area}&limit=${limit}&offset=${offset}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -386,7 +387,7 @@ export async function allAlbum(area,limit,offset){
 //获取用户订阅的各种资源数量
 export async function userSubCount(){
     return axios({
-        url: `/user/subcount?timerstamp=${Date.now()}`,
+        url: `/user/subcount?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -394,7 +395,7 @@ export async function userSubCount(){
 //获取用户收藏的歌手列表
 export async function arSublist(){
     return axios({
-        url: `/artist/sublist?timerstamp=${Date.now()}`,
+        url: `/artist/sublist?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -402,7 +403,7 @@ export async function arSublist(){
 //获取用户收藏的MV列表
 export async function mvSublist(){
     return axios({
-        url: `/mv/sublist?timerstamp=${Date.now()}`,
+        url: `/mv/sublist?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -410,7 +411,7 @@ export async function mvSublist(){
 //退出登录
 export async function logout(){
     return axios({
-        url: `/logout`,
+        url: `/logout?timestamp=${Date.now()}`,
         method: 'post'
     })
 }
@@ -418,7 +419,7 @@ export async function logout(){
 //获取每日推荐歌单
 export async function recommendResource(){
     return axios({
-        url: `/recommend/resource`,
+        url: `/recommend/resource?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -426,7 +427,7 @@ export async function recommendResource(){
 //获取每日推荐歌曲
 export async function recommendSongs(){
     return axios({
-        url: `/recommend/songs`,
+        url: `/recommend/songs?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -434,7 +435,7 @@ export async function recommendSongs(){
 //获取历史日推可用日期列表
 export async function historyRecommend(){
     return axios({
-        url: `/history/recommend/songs`,
+        url: `/history/recommend/songs?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -442,7 +443,7 @@ export async function historyRecommend(){
 //获取历史日推详情数据
 export async function historyRecommendSongs(date){
     return axios({
-        url: `/history/recommend/songs/detail?date=${date}`,
+        url: `/history/recommend/songs/detail?date=${date}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -450,7 +451,7 @@ export async function historyRecommendSongs(date){
 //获取历史日推详情数据
 export async function personalFm(){
     return axios({
-        url: `/personal_fm?timerstamp=${Date.now()}`,
+        url: `/personal_fm?timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -458,7 +459,7 @@ export async function personalFm(){
 //收藏/取消收藏歌单
 export async function plSub(t,id){
     return axios({
-        url: `/playlist/subscribe?t=${t}&id=${id}&timerstamp=${Date.now()}`,
+        url: `/playlist/subscribe?t=${t}&id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -466,7 +467,7 @@ export async function plSub(t,id){
 //收藏/取消收藏歌手
 export async function arSub(t,id){
     return axios({
-        url: `/artist/sub?t=${t}&id=${id}&timerstamp=${Date.now()}`,
+        url: `/artist/sub?t=${t}&id=${id}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }
@@ -474,7 +475,42 @@ export async function arSub(t,id){
 //收藏/取消收藏MV
 export async function mvSUb(t,mvid){
     return axios({
-        url: `/mv/sub?t=${t}&mvid=${mvid}&timerstamp=${Date.now()}`,
+        url: `/mv/sub?t=${t}&mvid=${mvid}&timestamp=${Date.now()}`,
+        method: 'get'
+    })
+}
+
+//把私人fm的歌曲移入垃圾桶
+export async function fmTrash(id){
+    return axios({
+        url: `/fm_trash?id=${id}&timestamp=${Date.now()}`,
+        method: 'get'
+    })
+}
+
+//喜欢歌曲
+export async function songLike(id){
+    return axios({
+        url: `/like?id=${id}&timestamp=${Date.now()}`,
+        method: 'get'
+    })
+}
+
+//获取用户喜欢的音乐列表
+export async function getUserLike(){
+    const res = await getLoginStatus()
+    const uid = res.data.data.account.id
+    const result = await axios({
+        url: `/likelist?uid=${uid}&timestamp=${Date.now()}`,
+        method: 'get'
+    })
+    return result
+
+}
+
+export async function addOrDelSongs(op,pid,tracks){
+    return axios({
+        url: `/playlist/tracks?op=${op}&pid=${pid}&tracks=${tracks}&timestamp=${Date.now()}`,
         method: 'get'
     })
 }

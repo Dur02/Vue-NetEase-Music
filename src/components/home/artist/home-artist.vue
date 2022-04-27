@@ -79,7 +79,7 @@ export default {
     },
     getUrl(item){
       // console.log(url)
-      return item.img1v1Url + "?param=120y120"
+      return item.img1v1Url + "?param=180y180"
     },
     changeTag(int,tag){
       switch (int){

@@ -77,7 +77,7 @@ export default {
     artist(this.$route.query.id)
     .then(res=>{
       this.artist = res.data.artist
-      this.picUrl = this.artist.picUrl + "?param180y180"
+      this.picUrl = this.artist.picUrl + "?param120y120"
       // console.log(this.artist)
     })
     .catch(err=>{

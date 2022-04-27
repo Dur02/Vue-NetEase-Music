@@ -43,7 +43,7 @@ export default {
     },
     getUrl (item) {
       // console.log(url)
-      return item.cover + "?param=200y200"
+      return item.cover + "?param=180y180"
       // return item.cover
     },
     getArtistTop (id) {

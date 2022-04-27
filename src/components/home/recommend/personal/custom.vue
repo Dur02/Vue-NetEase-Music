@@ -20,6 +20,7 @@
             <i
                 class="iconfont description"
                 :class="'icon-rili'+(date-1)"
+                style="width: 300px;height: 300px"
             />
           </div>
         </div>
@@ -89,7 +90,7 @@ export default {
           recommendSongs()
             .then(res=>{
               // console.log(res)
-              this.imgUrl = res.data.data.dailySongs[0].al.picUrl + "?param=300y300"
+              this.imgUrl = res.data.data.dailySongs[0].al.picUrl + "?param=180y180"
               this.bg2 = `background-image: url(\"${this.imgUrl}\");`
             })
             .catch(err=>{
@@ -98,7 +99,7 @@ export default {
           personalFm()
             .then(res=>{
               console.log(res)
-              this.imgUrl = res.data.data[0].album.blurPicUrl + "?param=300y300"
+              this.imgUrl = res.data.data[0].album.blurPicUrl + "?param=180y180"
               this.bg1 = `background-image: url(\"${this.imgUrl}\");`
               this.trackIds += res.data.data.map((item)=>{
                 return (item.id)
