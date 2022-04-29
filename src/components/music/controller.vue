@@ -20,11 +20,8 @@
         <span class="iconfont icon-zanting" v-if="isPlay" @click="playOrStop"></span>
         <span class="iconfont icon-bofang" v-else @click="playOrStop"></span>
         <span class="iconfont icon-xiayishou" @click="changeSong(1)"></span>
-        <span v-if="loginOrNot">
-          <span class="iconfont icon-aixin" v-if="!like" @click="songLike"></span>
-          <span class="iconfont icon-aixin_shixin" v-if="like" @click="cancelLike"></span>
-        </span>
-
+        <span class="iconfont icon-aixin" v-if="!like && loginOrNot" @click="songLike"></span>
+        <span class="iconfont icon-aixin_shixin" v-if="like && loginOrNot" @click="cancelLike"></span>
       </div>
 
       <div class="nowTime">{{playerNowTime}}</div>
