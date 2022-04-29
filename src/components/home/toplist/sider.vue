@@ -2,7 +2,7 @@
   <div class="sider" @click="">
     <h4>云音乐特色榜</h4>
     <div v-for="item of list.slice(0,4)"
-         style="height: 60px;margin-bottom: 16px;"
+         style="height: 60px;margin-bottom: 16px;display: flex"
          :class="{'active':item.id === id}"
          @click="itemClick(item.id)"
     >
@@ -14,7 +14,7 @@
     </div>
     <h4>全球媒体榜</h4>
     <div v-for="item of list.slice(4,list.length)"
-         style="height: 60px;margin-bottom: 16px;"
+         style="height: 60px;margin-bottom: 16px;display: flex"
          :class="{'active':item.id === id}"
          @click="itemClick(item.id)"
     >
@@ -64,14 +64,15 @@ export default {
 }
 .special{
   display: inline-block;
+  /*background-color: #296fc7;*/
   height: 60px;
-  width: 70%;
+  /*width: 70%;*/
+  flex: 2;
   font-size: 14px;
-  margin-bottom: 16px;
+  /*margin-bottom: 16px;*/
 }
 .title , .frequency{
   margin: 5px 0 0 8px;
-  height: 25px;
   overflow: hidden;
 }
 .frequency{
@@ -79,6 +80,6 @@ export default {
 }
 .active{
   background-color:#e6e6e6;
-  height: 60px;
+  /*height: 60px;*/
 }
 </style>

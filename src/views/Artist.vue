@@ -2,7 +2,7 @@
   <navbar></navbar>
   <div class="mod_section">
     <div class="mod_block">
-      <artist-bar></artist-bar>
+      <artist-bar/>
       <div class="mod_sort">
         <categories title="热门作品" :class="{active:type===1}" @click="change(1)"></categories>
         <categories title="所有专辑" :class="{active:type===2}" @click="change(2)"></categories>
@@ -50,7 +50,7 @@ export default {
   background-image: linear-gradient(#f2f2f2,#fafafa);
 }
 .mod_sort{
-  min-width: 1000px;
+  /*min-width: 1000px;*/
   /*width: 65%;*/
   /*background-color: rebeccapurple;*/
   /*margin: 0 auto;*/

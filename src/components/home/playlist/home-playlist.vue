@@ -144,20 +144,22 @@ export default {
   color: #d8d8d8;
 }
 .mod_block{
-  background-color: #fff;
+  /*background-color: aqua;*/
   width: 80%;
   margin: 0 auto;
 }
 .mod_playlist{
-  width: 15%;
+  width: 20%;
   height: 100%;
-  margin: 20px 30px;
+  /*background-color: wheat;*/
+  margin: 10px auto;
   overflow: hidden;
   display: inline-grid;
 }
 .mod_pic{
-  width: 100%;
+  width: 90%;
   height: 100%;
+  margin: 0 auto;
   overflow: hidden;
 }
 .artist-pic{
@@ -173,11 +175,11 @@ export default {
   -webkit-transform: scale(1.1) translateZ(0);
 }
 .mod_name{
+  width: 90%;
   margin: 10px auto;
 }
 .artist-name{
   width: 21%;
-  margin: 20px auto;
   font-size: 15px;
 }
 .artist-name:hover{

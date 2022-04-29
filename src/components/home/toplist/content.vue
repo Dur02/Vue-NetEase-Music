@@ -408,10 +408,6 @@ export default {
   width: calc(100% - 300px);
   /*background-color: aquamarine;*/
 }
-.creator{
-  /*background-color: aquamarine;*/
-  height: 40px;
-}
 .creator-avatar{
   width: 40px;
   height: 40px;
@@ -422,8 +418,8 @@ export default {
   position: relative;
   color: #666666;
   bottom: 12px;
-  left: 10px;
-  margin-right: 50px;
+  /*left: 10px;*/
+  margin-right: 20px;
 }
 .play_count span{
   color: #c20c0c;

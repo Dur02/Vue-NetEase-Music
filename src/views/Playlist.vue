@@ -42,7 +42,7 @@ export default {
   position: relative;
 }
 .mod_sort{
-  width: 65%;
+  width: 70%;
   border-left: #d5d5d5 1px solid;
   border-right: #d5d5d5 1px solid;
   margin: 0 auto;

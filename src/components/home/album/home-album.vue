@@ -152,14 +152,15 @@ h2{
   margin: 0 auto;
 }
 .mod_playlist{
-  width: 15%;
+  width: 20%;
   height: 100%;
-  margin: 20px 30px;
+  /*margin: 20px 30px;*/
   overflow: hidden;
   display: inline-grid;
 }
 .mod_pic{
-  width: 100%;
+  width: 90%;
+  margin: 10px auto;
   height: 100%;
   overflow: hidden;
 }
@@ -177,7 +178,7 @@ h2{
 }
 .mod_name,.mod_artist{
   text-align: center;
-  width: 100%;
+  width: 90%;
   margin: 7px auto 8px;
   overflow: hidden;
   text-overflow: ellipsis;

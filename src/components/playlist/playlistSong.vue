@@ -112,7 +112,7 @@ export default {
   /*height: 1000px;*/
 }
 .mod_playlist{
-  width: 65%;
+  width: 70%;
   /*height: 1000px;*/
   /*background-color: aqua;*/
   margin: 0 auto 20px auto;

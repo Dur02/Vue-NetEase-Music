@@ -137,13 +137,13 @@ export default {
 }
 .mv_play{
   width: 80%;
+  height: 100%;
   /*border: 1px solid #000;*/
-  padding-top: 20px;
+  padding-top: 10px;
   margin: 0 auto;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  clear: both;
 }
 .sub_btn{
   float: right;

@@ -134,7 +134,7 @@ export default {
   position: relative;
 }
 .mod_playlist{
-  width: 65%;
+  width: 70%;
   /*background-color: aqua;*/
   margin: 0 auto;
   background-color: #fff;
@@ -170,7 +170,7 @@ export default {
 }
 .creator{
   /*background-color: aqua;*/
-  height: 40px;
+  /*height: 40px;*/
 }
 .comment{
   width: 40px;
@@ -184,7 +184,7 @@ export default {
   color: #666666;
   bottom: 12px;
   left: 10px;
-  margin-right: 50px;
+  margin-right: 20px;
 }
 /*.create_time{*/
 /*  left: 50px;*/
@@ -202,20 +202,7 @@ export default {
   width: 100%;
 }
 .description{
-  /*background-color: aquamarine;*/
-  /*height: 168px;*/
-  /*overflow: hidden;*/
-  /*white-space: nowrap;*/
-  /*text-overflow: ellipsis;*/
   white-space: pre-wrap;
   word-break: break-all;
 }
-/*.description p{*/
-/*  white-space: pre-wrap;     !*防止描述中带有回车，使用white-space: pre-wrap;并用v-html输出就可带回车输出正确的内容*!*/
-/*  font-size: 14px;*/
-/*  color: #666;*/
-/*  !*background-color: red;*!*/
-/*  overflow: hidden;*/
-/*  text-overflow: ellipsis;*/
-/*}*/
 </style>

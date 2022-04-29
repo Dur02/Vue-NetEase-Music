@@ -150,14 +150,14 @@ h4{
   margin: 0 auto;
 }
 .mod_playlist{
-  width: 15%;
+  width: 20%;
   height: 100%;
-  margin: 20px 30px;
   overflow: hidden;
   display: inline-grid;
 }
 .mod_pic{
-  width: 100%;
+  width: 90%;
+  margin: 10px auto;
   height: 100%;
   overflow: hidden;
 }
@@ -175,9 +175,10 @@ h4{
 }
 .mod_name{
   margin: 10px auto;
+  text-align: center;
 }
 .artist-name{
-  width: 21%;
+  /*width: 21%;*/
   margin: 20px auto;
   font-size: 15px;
 }

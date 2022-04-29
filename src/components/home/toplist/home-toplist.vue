@@ -1,5 +1,5 @@
 <template>
-  <div class="mod_section">
+  <div class="mod_section2">
     <div class="main">
       <sider :list="list" @childrenValue="getId"/>
       <content :list="list" :id="id"/>
@@ -36,8 +36,9 @@ export default {
 </script>
 
 <style scoped>
-.mod_section{
+.mod_section2{
   min-width: 1300px;
+  /*height: 100px;*/
   /*background-color: aquamarine;*/
 }
 .main{
