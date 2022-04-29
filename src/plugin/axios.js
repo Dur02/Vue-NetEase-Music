@@ -497,14 +497,11 @@ export async function songLike(id){
 }
 
 //获取用户喜欢的音乐列表
-export async function getUserLike(){
-    const res = await getLoginStatus()
-    const uid = res.data.data.account.id
-    const result = await axios({
+export async function getUserLike(uid){
+    return axios({
         url: `/likelist?uid=${uid}&timestamp=${Date.now()}`,
         method: 'get'
     })
-    return result
 
 }
 

@@ -20,8 +20,11 @@
         <span class="iconfont icon-zanting" v-if="isPlay" @click="playOrStop"></span>
         <span class="iconfont icon-bofang" v-else @click="playOrStop"></span>
         <span class="iconfont icon-xiayishou" @click="changeSong(1)"></span>
-        <span class="iconfont icon-aixin" v-if="!like" @click="songLike"></span>
-        <span class="iconfont icon-aixin_shixin" v-if="like" @click="cancelLike"></span>
+        <span v-if="loginOrNot">
+          <span class="iconfont icon-aixin" v-if="!like" @click="songLike"></span>
+          <span class="iconfont icon-aixin_shixin" v-if="like" @click="cancelLike"></span>
+        </span>
+
       </div>
 
       <div class="nowTime">{{playerNowTime}}</div>
@@ -96,7 +99,8 @@ export default {
       playing:-1,
       musicInf:{},
       picUrl:"",
-      like:false
+      like:false,
+      loginOrNot:false
     }
   },
   beforeMount() {
@@ -120,17 +124,31 @@ export default {
       .catch(err=>{
         console.log(err)
       })
-    getUserLike()
-      .then(res=>{
-        const likeArr = res.data.ids
-        likeArr.map(
-            (item)=>{
-              if (item === this.playing){
-                this.like = true
-              }
-            }
-        )
-      })
+    getLoginStatus()
+        .then(res=>{
+          // console.log(res)
+          if (res.data.data.account !== null){
+            this.loginOrNot = true
+            const uid = res.data.data.account.id
+            getUserLike(uid) //做的是侧边栏，不方便做分页，先取1000，后续可加大或者改样式
+                .then(res=>{
+                  const likeArr = res.data.ids
+                  likeArr.map(
+                      (item)=>{
+                        if (item === this.playing){
+                          this.like = true
+                        }
+                      }
+                  )
+                })
+                .catch(err=>{
+                  console.log(err)
+                })
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
     // console.log(this.playing)
   },
   methods: {

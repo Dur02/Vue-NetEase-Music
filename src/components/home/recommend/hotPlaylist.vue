@@ -68,20 +68,21 @@ export default {
   font-family: "微軟正黑體 Light", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
 }
 .mod_block{
-  /*background-color: #296fc7;*/
+  /*background-color: red;*/
   width: 70%;
   margin: 0 auto;
 }
 .mod_playlist{
-  width: 20%;
+  width: 25%;
   height: 100%;
-  margin: 0 29px;
+  margin: 0 auto;
   overflow: hidden;
   display: inline-grid;
 }
 .mod_pic{
-  width: 100%;
+  width: 95%;
   height: 100%;
+  margin: 0 auto;
   overflow: hidden;
 }
 .artist-pic{
@@ -97,6 +98,7 @@ export default {
   -webkit-transform: scale(1.1) translateZ(0);
 }
 .mod_name{
+  width: 95%;
   margin: 10px auto;
 }
 .artist-name{

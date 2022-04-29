@@ -85,7 +85,7 @@ export default {
 
 <style scoped>
 .mod_section{
-  /*min-width: 1300px;*/
+  min-width: 1300px;
   width: 98%;
   margin: 0 auto;
   position: relative;

@@ -81,14 +81,14 @@ export default {
   margin: 0 auto;
 }
 .mod_playlist{
-  width: 20%;
+  width: 25%;
   height: 100%;
-  margin: 0 29px;
+  margin: 0 auto;
   overflow: hidden;
   display: inline-grid;
 }
 .mod_pic{
-  width: 100%;
+  width: 95%;
   height: 100%;
   overflow: hidden;
 }
@@ -105,6 +105,7 @@ export default {
   -webkit-transform: scale(1.1) translateZ(0);
 }
 .mod_name{
+  width: 95%;
   margin: 10px auto;
 }
 .artist-name{
