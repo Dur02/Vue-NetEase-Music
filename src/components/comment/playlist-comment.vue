@@ -146,7 +146,7 @@ export default {
 <style scoped>
 .mod_section{
   border: #d5d5d5 1px solid;
-  width: 65%;
+  width: 70%;
   margin: 0 auto;
   background-color: #fff;
 }
