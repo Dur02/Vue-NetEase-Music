@@ -47,6 +47,7 @@ body{
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+  overflow-x: hidden;
 }
 .el-drawer__body{
   /*background-color: aqua;*/

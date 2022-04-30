@@ -21,7 +21,7 @@
         <span class="iconfont icon-bofang" v-else @click="playOrStop"></span>
         <span class="iconfont icon-xiayishou" @click="changeSong(1)"></span>
         <span class="iconfont icon-aixin" v-if="!like && loginOrNot" @click="songLike"></span>
-        <span class="iconfont icon-aixin_shixin" v-if="like && loginOrNot" @click="cancelLike"></span>
+        <span class="iconfont icon-aixin_shixin" style="color: red" v-if="like && loginOrNot" @click="cancelLike"></span>
       </div>
 
       <div class="nowTime">{{playerNowTime}}</div>
@@ -109,13 +109,12 @@ export default {
     this.playing = this.$store.state.playing
     songDetail(this.playing)
       .then(res=>{
-        // console.log(res)
+        console.log(res)
         this.musicInf = res.data.songs[0]
         this.picUrl = this.musicInf.al.picUrl + "?param=80y80"
-        if (res.data.songs[0].fee === 4){
+        if (res.data.songs[0].fee === 4 || res.data.songs[0].fee === 1){
+            ElMessage.warning("需要付费，为你跳过")
            this.changeSong(1)
-        }else if (res.data.songs[0].fee === 1){
-          ElMessage.warning("VIP歌曲，正在试听")
         }
       })
       .catch(err=>{
@@ -306,14 +305,12 @@ export default {
       this.playing = this.$store.state.playing
       songDetail(this.playing)
       .then(res=>{
-        // console.log(res)
+        console.log(res)
         this.musicInf = res.data.songs[0]
         this.picUrl = this.musicInf.al.picUrl + "?param=80y80"
-        if (res.data.songs[0].fee === 4){
+        if (res.data.songs[0].fee === 4 || res.data.songs[0].fee === 1){
           ElMessage.warning("付费歌曲，为你切换下一首")
           this.changeSong(1)
-        }else if (res.data.songs[0].fee === 1){
-          ElMessage.warning("VIP歌曲，正在试听")
         }
       })
       .catch(err=>{

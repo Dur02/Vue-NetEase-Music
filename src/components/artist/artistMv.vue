@@ -50,7 +50,7 @@ export default {
         .then(res=>{
           this.mvSize = res.data.data.artist.mvSize
         })
-    artistMv(this.$route.query.id,(this.currentPage-1)*54)
+    artistMv(this.$route.query.id,(this.currentPage-1)*20)
         .then(res=>{
           this.mvs = res.data.mvs
         })
@@ -60,7 +60,7 @@ export default {
   },
   watch:{
     currentPage:function (newVal,oldVal) {
-      artistMv(this.$route.query.id,(this.currentPage-1)*54)
+      artistMv(this.$route.query.id,(this.currentPage-1)*20)
           .then(res=>{
             this.mvs = res.data.mvs
           })

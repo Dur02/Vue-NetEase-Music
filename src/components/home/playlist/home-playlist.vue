@@ -144,7 +144,7 @@ export default {
   color: #d8d8d8;
 }
 .mod_block{
-  /*background-color: aqua;*/
+  background-color: #fff;
   width: 80%;
   margin: 0 auto;
 }
