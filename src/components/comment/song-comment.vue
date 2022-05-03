@@ -25,7 +25,7 @@
             </el-row>
             <el-row v-for="item2 of item.beReplied" v-if="item.beReplied.length !== 0">
               <el-card class="beReplied">
-                <div class="nickname">
+                <div class="nickname2">
                   {{item2.user.nickname}} :
                   <span class="content">
                     {{item2.content}}
@@ -58,12 +58,26 @@
             <el-avatar shape="square" :size="50" :src=getAvatarUrl(item) />
           </el-col>
           <el-col :span="23">
-            <div class="nickname">
-              {{item.user.nickname}} :
-              <span class="content">
-                {{item.content}}
-              </span>
-            </div>
+            <el-row>
+              <el-col :span="24">
+                <div class="nickname">
+                  {{item.user.nickname}} :
+                  <span class="content">
+                    {{item.content}}
+                  </span>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row v-for="item2 of item.beReplied" v-if="item.beReplied.length !== 0">
+              <el-card class="beReplied">
+                <div class="nickname2">
+                  {{item2.user.nickname}} :
+                  <span class="content">
+                    {{item2.content}}
+                  </span>
+                </div>
+              </el-card>
+            </el-row>
           </el-col>
         </el-row>
         <el-row>
@@ -176,6 +190,12 @@ export default {
   position: relative;
   color: #0077aa;
   left: 8px;
+  display: inline-block;
+}
+.nickname2{
+  position: relative;
+  color: #0077aa;
+  left: 0px;
   display: inline-block;
 }
 .content{
