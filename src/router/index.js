@@ -11,25 +11,25 @@ const routes = [
     path: '/Home',
     name: 'Home',
     component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
-    meta:{title:'首页',keepAlive:true},
+    // meta:{title:'首页',keepAlive:true},
   },
   {
     path: '/Search',
     name: 'Search',
     component: () => import('../views/Search.vue'),
-    meta:{title:'搜索',keepAlive:true},
+    // meta:{title:'搜索',keepAlive:true},
   },
   {
     path: '/Playlist',
     name: 'Playlist',
     component: () => import('../views/Playlist.vue'),
-    meta:{title:'歌单',keepAlive:true},
+    // meta:{title:'歌单',keepAlive:true},
   },
   {
     path: '/Album',
     name: 'Album',
     component: () => import('../views/Album.vue'),
-    meta:{title:'专辑',keepAlive:true},
+    // meta:{title:'专辑',keepAlive:true},
   },
   {
     path: '/Artist',
@@ -48,12 +48,6 @@ const routes = [
     name: 'TopList',
     component: () => import('../views/TopList.vue'),
     // meta:{title:'排行榜',keepAlive:true},
-  },
-  {
-    path: '/Music',
-    name: 'Music',
-    component: () => import('../views/Music.vue'),
-    // meta:{title:'音乐',keepAlive:true},
   },
   {
     path: '/DiscoverTopList',

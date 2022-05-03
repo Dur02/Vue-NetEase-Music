@@ -71,7 +71,7 @@ export default {
           .then(res=>{
             // console.log(res)
             // console.log(this.$store.state.playing)
-            this.imgUrl = res.data.songs[0].al.picUrl + "?param200y200"
+            this.imgUrl = res.data.songs[0].al.picUrl + "?imageView&quality=20"
             this.bg = `background-image: url(\"${this.imgUrl}\");`
             this.songs = res.data.songs
             this.name =this.songs[0].name

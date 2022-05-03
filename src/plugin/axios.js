@@ -95,7 +95,6 @@ export async function getLoginStatus() {
         url: `/login/status?timerstamp=${Date.now()}`,
         withCredentials: true, //关键
     })
-    // console.log("sssss",res)
     if (res.data.data.account !== null){
         // document.querySelector('#info').innerText = JSON.stringify(res.data.data.profile.nickname, null, 2)
     }
@@ -360,7 +359,7 @@ export async function catlist(){
     })
 }
 
-//获取全部歌单分类
+//获取某标签下的歌单
 export async function topPlaylist(order,cat,limit,offset){
     return axios({
         url: `/top/playlist?order=${order}&cat=${cat}&limit=${limit}&offset=${offset}&timestamp=${Date.now()}`,
@@ -448,7 +447,7 @@ export async function historyRecommendSongs(date){
     })
 }
 
-//获取历史日推详情数据
+//获取私人Fm数据
 export async function personalFm(){
     return axios({
         url: `/personal_fm?timestamp=${Date.now()}`,
@@ -505,6 +504,7 @@ export async function getUserLike(uid){
 
 }
 
+//从歌单中添加或删除歌曲
 export async function addOrDelSongs(op,pid,tracks){
     return axios({
         url: `/playlist/tracks?op=${op}&pid=${pid}&tracks=${tracks}&timestamp=${Date.now()}`,

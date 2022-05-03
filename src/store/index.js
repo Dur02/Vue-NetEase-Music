@@ -3,7 +3,7 @@ import {getLoginStatus, personalFm, recommendSongs, songDetail, songUrl, userPla
 
 export default createStore({
   state: {
-    activeLogin:false,
+    activeLogin:false, //是否打开登录窗口
     songUrl:[],  //存放歌单或专辑中所有歌曲的url,数据为各歌曲的url地址，但不根据歌单排序，需要额外数据配合处理
     playing:-1,  //标记正在播放的歌曲id
     userPlaylist:[], //存放用户的播放列表，每个数据存储着歌曲的id和其他信息，因为按歌单排序使用可以配合songUrl进行歌曲的切换
@@ -11,8 +11,8 @@ export default createStore({
     isPlay:false, //音乐是否播放
     drawerFlag:false, //drawer的绑定数据
     lyricFlag:false, //歌词详情页标志
-    value:-1,
-    isPersonalFm:false
+    value:-1, //歌曲播放进度
+    isPersonalFm:false  //是否为私人FM
   },
   mutations: {
     activeLogin (state) {
