@@ -12,7 +12,7 @@
           {{item}}&nbsp;
         </span>
       </span>
-      <el-button class="sub_btn" type="primary" @click="arSub">{{btnContent}}</el-button>
+      <el-button class="sub_btn" v-if="loginOrNot" type="primary" @click="arSub">{{btnContent}}</el-button>
     </p>
     <div class="mod_pic">
       <img :src="picUrl" alt="加载失败" class="artist_pic">
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import {arSub, arSublist, artist, mvSUb, mvSublist} from "@/plugin/axios";
+import {arSub, arSublist, artist, getLoginStatus, mvSUb, mvSublist, userPlaylist} from "@/plugin/axios";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -30,7 +30,8 @@ export default {
     return{
       picUrl:"",
       artist:"",
-      btnContent:"收藏"
+      btnContent:"收藏",
+      loginOrNot:false
     }
   },
   methods:{
@@ -59,17 +60,28 @@ export default {
     }
   },
   beforeMount() {
-    arSublist()
+    getLoginStatus()
         .then(res=>{
-          console.log(res)
-          const arr = res.data.data
-          arr.map(
-              (item)=>{
-                if (item.id === parseInt(this.$route.query.id)){
-                  this.btnContent = "取消收藏"
-                }
-              }
-          )
+          // console.log(res)
+          if (res.data.data.account !== null){
+            this.loginOrNot = true
+            this.uid = res.data.data.account.id
+            arSublist()
+                .then(res=>{
+                  console.log(res)
+                  const arr = res.data.data
+                  arr.map(
+                      (item)=>{
+                        if (item.id === parseInt(this.$route.query.id)){
+                          this.btnContent = "取消收藏"
+                        }
+                      }
+                  )
+                })
+                .catch(err=>{
+                  console.log(err)
+                })
+          }
         })
         .catch(err=>{
           console.log(err)

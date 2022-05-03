@@ -87,7 +87,7 @@ export default {
           if (res.data.data.account !== null){
             this.loginOrNot = true
             this.uid = res.data.data.account.id
-            userPlaylist(this.uid,1000,0) //做的是侧边栏，不方便做分页，先取1000，后续可加大或者改样式
+            userPlaylist(this.uid,1000,0)
                 .then(res=>{
                   console.log(res)
                   for (let item of res.data.playlist){

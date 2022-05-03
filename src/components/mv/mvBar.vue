@@ -3,7 +3,7 @@
     <p class="icon-MV iconfont" style="color: #7c9aab">
       <span style="color: #000">{{mvDetail.name}}</span>
       <span @click="toArtist(mvDetail.artistId)">{{mvDetail.artistName}}</span>
-      <el-button class="sub_btn" type="primary" @click="mvSub">{{btnContent}}</el-button>
+      <el-button class="sub_btn" v-if="loginOrNot" type="primary" @click="mvSub">{{btnContent}}</el-button>
     </p>
     <video class="mv_play" :src="mvUrl" controls="controls" autoplay="autoplay" height="500" width="700">
       您的浏览器不支持 video 标签。
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {mvDetail, mvSUb, mvSublist, mvUrl} from "@/plugin/axios";
+import {getLoginStatus, mvDetail, mvSUb, mvSublist, mvUrl, userPlaylist} from "@/plugin/axios";
 import {numberFix} from "@/common/date"
 import { ElMessage } from 'element-plus'
 
@@ -36,7 +36,8 @@ export default {
       mvDetail:"",
       mvUrl:"",
       playCount:"",
-      btnContent:"收藏"
+      btnContent:"收藏",
+      loginOrNot:false,
     }
   },
   methods:{
@@ -71,22 +72,33 @@ export default {
     // }
   },
   beforeMount() {
+    getLoginStatus()
+        .then(res=>{
+          // console.log(res)
+          if (res.data.data.account !== null){
+            this.loginOrNot = true
+            this.uid = res.data.data.account.id
+            mvSublist()
+                .then(res=>{
+                  console.log(res)
+                  const arr = res.data.data
+                  arr.map(
+                      (item)=>{
+                        if (item.vid === this.$route.query.id){
+                          this.btnContent = "取消收藏"
+                        }
+                      }
+                  )
+                })
+                .catch(err=>{
+                  console.log(err)
+                })
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
     // console.log(this.$route.query.id)
-    mvSublist()
-      .then(res=>{
-        console.log(res)
-        const arr = res.data.data
-        arr.map(
-            (item)=>{
-              if (item.vid === this.$route.query.id){
-                this.btnContent = "取消收藏"
-              }
-            }
-        )
-      })
-      .catch(err=>{
-        console.log(err)
-      })
     mvDetail(this.$route.query.id)
       .then(res=>{
         // console.log(res)
@@ -136,7 +148,7 @@ export default {
   text-decoration: underline;
 }
 .mv_play{
-  width: 80%;
+  width: 90%;
   height: 100%;
   /*border: 1px solid #000;*/
   padding-top: 10px;
