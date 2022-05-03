@@ -175,6 +175,7 @@ export default {
 }
 .beReplied{
   background-color: #f2f2f2;
+  margin-left: 20px;
   width: 100%;
 }
 .pagination{
