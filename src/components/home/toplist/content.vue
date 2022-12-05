@@ -152,13 +152,6 @@
         </el-card>
       </div>
     </div>
-    <el-pagination
-        layout="prev, pager, next"
-        :total="total"
-        class="pagination"
-        :page-size="20"
-        v-model:current-page="currentPage"
-    />
     <div style="width: 100%;height: 100px;"></div>
   </div>
 </template>

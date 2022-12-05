@@ -50,7 +50,7 @@ export function searchHot () {
 //获取验证码
 export async function getCaptcha (phone) {
     return axios({
-        url: `/captcha/sent?phone=${phone}&timerstamp=${Date.now()}`,  //获取验证码
+        url: `/captcha/sent?phone=${phone}`,  //获取验证码
         method: 'get'
     });
 }

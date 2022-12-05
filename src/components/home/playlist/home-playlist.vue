@@ -39,7 +39,7 @@
         layout="prev, pager, next"
         :total="total"
         class="pagination"
-        :page-size="30"
+        :page-size="35"
         v-model:current-page="currentPage"
     />
   </div>
